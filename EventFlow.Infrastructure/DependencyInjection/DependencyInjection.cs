@@ -1,4 +1,6 @@
-﻿using EventFlow.Infrastructure.Context;
+﻿using EventFlow.Domain.Interfaces;
+using EventFlow.Infrastructure.Context;
+using EventFlow.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +20,9 @@ namespace EventFlow.Infrastructure.DependencyInjection
                     configuration.GetConnectionString(
                         "DefaultConnection"));
             });
-
+            services.AddScoped<IPropostaRepository,PropostaRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
             return services;
         }
     }
+}

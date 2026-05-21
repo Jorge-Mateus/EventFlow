@@ -1,25 +1,18 @@
 ﻿using EventFlow.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventFlow.Domain.Entities
 {
     public class Proposta : BaseEntity
     {
-        private readonly List<PropostaItem> _itens = new();
-
         public Guid ClienteId { get; private set; }
 
         public StatusProposta Status { get; private set; }
 
+        public ICollection<PropostaItem> Itens { get; private set; }
+            = new List<PropostaItem>();
+        public Cliente Cliente { get; private set; }
         public decimal ValorTotal =>
-            _itens.Sum(x => x.Total);
-
-        public IReadOnlyCollection<PropostaItem> Itens =>
-            _itens;
+            Itens.Sum(x => x.Total);
 
         protected Proposta() { }
 
@@ -34,7 +27,7 @@ namespace EventFlow.Domain.Entities
             int quantidade,
             decimal valorUnitario)
         {
-            _itens.Add(new PropostaItem(
+            Itens.Add(new PropostaItem(
                 descricao,
                 quantidade,
                 valorUnitario));
@@ -49,5 +42,5 @@ namespace EventFlow.Domain.Entities
         {
             Status = StatusProposta.Aprovada;
         }
-    } 
+    }
 }
