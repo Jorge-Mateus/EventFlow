@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="EventFlow.Application/EventFlow.Application.csproj" />
+  <Project Path="EventFlow.CrossCutting/EventFlow.CrossCutting.csproj" />
+  <Project Path="EventFlow.Domain/EventFlow.Domain.csproj" />
+  <Project Path="EventFlow.Infrastructure/EventFlow.Infrastructure.csproj" />
+  <Project Path="EventFlow.Shared/EventFlow.Shared.csproj" />
+  <Project Path="EventFlow.Web/EventFlow.Web.csproj" />
+</Solution>
