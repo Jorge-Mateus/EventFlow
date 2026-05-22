@@ -4,12 +4,15 @@ namespace EventFlow.Domain.Entities
 {
     public class Proposta : BaseEntity
     {
+        private readonly List<PropostaItem> _itens
+            = new();
+
         public StatusProposta Status { get; private set; }
 
-        public ICollection<PropostaItem> Itens { get; private set; }
-            = new List<PropostaItem>();
+        public IReadOnlyCollection<PropostaItem> Itens => _itens.AsReadOnly();
+
         public decimal ValorTotal =>
-            Itens.Sum(x => x.Total);
+            _itens.Sum(x => x.Total);
 
         public Guid EventoId { get; private set; }
 
@@ -22,14 +25,20 @@ namespace EventFlow.Domain.Entities
             EventoId = eventoId;
             Status = StatusProposta.Rascunho;
         }
+        public void CarregarItens(
+    IEnumerable<PropostaItem> itens)
+        {
+            _itens.Clear();
 
+            _itens.AddRange(itens);
+        }
         public void AdicionarItem(
             Guid categoriaOrcamentoId,
             string descricao,
             int quantidade,
             decimal valorUnitario)
         {
-            Itens.Add(new PropostaItem(
+            _itens.Add(new PropostaItem(
                 categoriaOrcamentoId,
                 descricao,
                 quantidade,

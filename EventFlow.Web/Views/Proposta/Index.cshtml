@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EventFlow.Application.DTOs.Proposta.PropostaDto>
+
+@{
+    ViewData["Title"] = "Propostas";
+}
+
+<h1>Propostas</h1>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Nova Proposta
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Status</td>
+                <td>
+                    @item.ValorTotal.ToString("C")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

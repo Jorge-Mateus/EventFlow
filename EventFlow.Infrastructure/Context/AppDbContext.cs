@@ -1,28 +1,38 @@
 ﻿using EventFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventFlow.Infrastructure.Context
+namespace EventFlow.Infrastructure.Context;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext : DbContext
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options)
+        : base(options)
     {
-        public AppDbContext(
-            DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
+    }
 
-        public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Cliente> Clientes
+    { get; set; }
 
-        public DbSet<Proposta> Propostas { get; set; }
-        public DbSet<CategoriaOrcamento> CategoriasOrcamento { get; set; }
-        protected override void OnModelCreating(
-            ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(
-                typeof(AppDbContext).Assembly);
+    public DbSet<Evento> Eventos
+    { get; set; }
 
-            base.OnModelCreating(modelBuilder);
-        }
+    public DbSet<Proposta> Propostas
+    { get; set; }
 
+    public DbSet<PropostaItem> PropostaItens
+    { get; set; }
+
+    public DbSet<CategoriaOrcamento>
+        CategoriasOrcamento
+    { get; set; }
+
+    protected override void OnModelCreating(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(AppDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
     }
 }

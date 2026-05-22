@@ -1,16 +1,11 @@
 ﻿using EventFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventFlow.Infrastructure.Mappings
 {
     public class ClienteMap :
-    IEntityTypeConfiguration<Cliente>
+        IEntityTypeConfiguration<Cliente>
     {
         public void Configure(
             EntityTypeBuilder<Cliente> builder)
@@ -27,6 +22,7 @@ namespace EventFlow.Infrastructure.Mappings
                 .HasMaxLength(20);
 
             builder.Property(x => x.Email)
+                .IsRequired()
                 .HasMaxLength(200);
         }
     }

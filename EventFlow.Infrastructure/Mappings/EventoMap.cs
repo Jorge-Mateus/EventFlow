@@ -21,9 +21,15 @@ public class EventoMap :
         builder.Property(x => x.LocalEvento)
             .HasMaxLength(300);
 
+        builder.Property(x => x.QuantidadeConvidados)
+            .IsRequired();
+
+        builder.Property(x => x.DataEvento)
+            .IsRequired();
+
         builder
             .HasOne(x => x.Cliente)
-            .WithMany()
+            .WithMany(x => x.Eventos)
             .HasForeignKey(x => x.ClienteId)
             .OnDelete(DeleteBehavior.Restrict);
     }

@@ -1,0 +1,67 @@
+﻿@model EventFlow.Application.DTOs.Evento.CriarEventoDto
+
+@{
+    ViewData["Title"] = "Novo Evento";
+}
+
+<h1>Novo Evento</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label class="form-label">
+            Cliente
+        </label>
+
+        <select asp-for="ClienteId"
+                asp-items="ViewBag.Clientes"
+                class="form-select">
+            <option value="">
+                Selecione
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Nome
+        </label>
+
+        <input asp-for="Nome"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Data Evento
+        </label>
+
+        <input asp-for="DataEvento"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Local
+        </label>
+
+        <input asp-for="LocalEvento"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Quantidade Convidados
+        </label>
+
+        <input asp-for="QuantidadeConvidados"
+               class="form-control" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Salvar
+    </button>
+
+</form>

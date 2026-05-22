@@ -12,11 +12,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(
     builder.Configuration);
 
-var app = builder.Build();
-
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IPropostaService, PropostaService>();
+builder.Services.AddScoped<ICategoriaOrcamentoService, CategoriaOrcamentoService>();
+builder.Services.AddScoped<IEventoService, EventoService>();
+
+
+var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,30 @@
+﻿@model EventFlow.Application.DTOs.Proposta.CriarPropostaDto
+
+@{
+    ViewData["Title"] = "Nova Proposta";
+}
+
+<h1>Nova Proposta</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label class="form-label">
+            Evento
+        </label>
+
+        <select asp-for="EventoId"
+                asp-items="ViewBag.Eventos"
+                class="form-select">
+            <option value="">
+                Selecione
+            </option>
+        </select>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Salvar
+    </button>
+
+</form>

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<EventFlow.Application.DTOs.Evento.EventoDto>
+
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<h1>Eventos</h1>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Novo Evento
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Data</th>
+            <th>Local</th>
+            <th>Convidados</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.DataEvento.ToShortDateString()</td>
+                <td>@item.LocalEvento</td>
+                <td>@item.QuantidadeConvidados</td>
+            </tr>
+        }
+    </tbody>
+</table>

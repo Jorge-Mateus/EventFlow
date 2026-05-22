@@ -2,7 +2,108 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-4">
+            EventFlow
+        </h1>
+
+        <p class="lead">
+            Gestão de eventos, propostas e operação.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Clientes
+                    </h5>
+
+                    <p class="card-text">
+                        Cadastro de clientes.
+                    </p>
+
+                    <a asp-controller="Cliente"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Acessar
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Eventos
+                    </h5>
+
+                    <p class="card-text">
+                        Gestão de eventos.
+                    </p>
+
+                    <a asp-controller="Evento"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Acessar
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Categorias
+                    </h5>
+
+                    <p class="card-text">
+                        Categorias do orçamento.
+                    </p>
+
+                    <a asp-controller="CategoriaOrcamento"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Acessar
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Propostas
+                    </h5>
+
+                    <p class="card-text">
+                        Gestão de propostas.
+                    </p>
+
+                    <a asp-controller="Proposta"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Acessar
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>

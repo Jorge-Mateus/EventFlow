@@ -25,6 +25,11 @@ public class PropostaMap :
             .HasForeignKey(x => x.PropostaId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Metadata
+            .FindNavigation(nameof(Proposta.Itens))
+            ?.SetPropertyAccessMode(
+                PropertyAccessMode.Field);
+
         builder
             .HasOne(x => x.Evento)
             .WithMany(x => x.Propostas)

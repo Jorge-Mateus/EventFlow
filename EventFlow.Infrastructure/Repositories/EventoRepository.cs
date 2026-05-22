@@ -8,14 +8,14 @@ using System.Data;
 
 namespace EventFlow.Infrastructure.Repositories;
 
-public class PropostaRepository
-    : IPropostaRepository
+public class EventoRepository
+    : IEventoRepository
 {
     private readonly AppDbContext _context;
 
     private readonly IConfiguration _configuration;
 
-    public PropostaRepository(
+    public EventoRepository(
         AppDbContext context,
         IConfiguration configuration)
     {
@@ -31,71 +31,50 @@ public class PropostaRepository
     }
 
     public async Task AdicionarAsync(
-        Proposta proposta)
+        Evento evento)
     {
-        await _context.Propostas.AddAsync(
-            proposta);
+        await _context.Eventos.AddAsync(evento);
     }
 
     public Task AtualizarAsync(
-        Proposta proposta)
+        Evento evento)
     {
-        _context.Propostas.Update(proposta);
+        _context.Eventos.Update(evento);
 
         return Task.CompletedTask;
     }
 
-    public async Task<Proposta?> ObterPorIdAsync(
-    Guid id)
-    {
-        var sql = @"
-        SELECT
-            *
-        FROM Propostas
-        WHERE Id = @Id;
-
-        SELECT
-            *
-        FROM PropostaItens
-        WHERE PropostaId = @Id;
-    ";
-
-        using var connection = Connection();
-
-        using var multi =
-            await connection.QueryMultipleAsync(
-                sql,
-                new { Id = id });
-
-        var proposta =
-            await multi
-                .ReadFirstOrDefaultAsync<Proposta>();
-
-        if (proposta is null)
-            return null;
-
-        var itens =
-            (await multi.ReadAsync<PropostaItem>())
-            .ToList();
-
-        proposta.CarregarItens(itens);
-
-        return proposta;
-    }
-
-    public async Task<IEnumerable<Proposta>>
-        ObterTodosAsync()
+    public async Task<Evento?> ObterPorIdAsync(
+        Guid id)
     {
         var sql = @"
             SELECT
                 *
-            FROM Propostas
+            FROM Eventos
+            WHERE Id = @Id
         ";
 
         using var connection = Connection();
 
         return await connection
-            .QueryAsync<Proposta>(sql);
+            .QueryFirstOrDefaultAsync<Evento>(
+                sql,
+                new { Id = id });
+    }
+
+    public async Task<IEnumerable<Evento>>
+        ObterTodosAsync()
+    {
+        var sql = @"
+            SELECT
+                *
+            FROM Eventos
+        ";
+
+        using var connection = Connection();
+
+        return await connection
+            .QueryAsync<Evento>(sql);
     }
 
     public async Task SalvarAlteracoesAsync()
