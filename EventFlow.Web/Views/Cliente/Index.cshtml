@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EventFlow.Application.DTOs.Cliente.ClienteDto>
+
+<h1>Clientes</h1>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Novo Cliente
+</a>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Telefone</td>
+                <td>@item.Email</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
