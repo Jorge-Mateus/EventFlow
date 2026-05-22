@@ -26,9 +26,9 @@ public class PropostaMap :
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(x => x.Cliente)
+            .HasOne(x => x.Evento)
             .WithMany(x => x.Propostas)
-            .HasForeignKey(x => x.ClienteId)
+            .HasForeignKey(x => x.EventoId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -23,5 +23,10 @@ public class PropostaItemMap :
 
         builder.Property(x => x.ValorUnitario)
             .HasColumnType("decimal(18,2)");
+        builder
+        .HasOne(x => x.CategoriaOrcamento)
+        .WithMany(x => x.Itens)
+        .HasForeignKey(x => x.CategoriaOrcamentoId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
 }

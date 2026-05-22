@@ -19,11 +19,12 @@ public class PropostaService : IPropostaService
         CriarPropostaDto dto)
     {
         var proposta = new Proposta(
-            dto.ClienteId);
+            dto.EventoId);
 
         foreach (var item in dto.Itens)
         {
             proposta.AdicionarItem(
+                item.CategoriaOrcamentoId,
                 item.Descricao,
                 item.Quantidade,
                 item.ValorUnitario);
@@ -45,7 +46,7 @@ public class PropostaService : IPropostaService
             new PropostaDto
             {
                 Id = x.Id,
-                ClienteId = x.ClienteId,
+                EventoId = x.EventoId,
                 Status = x.Status,
                 ValorTotal = x.ValorTotal
             });
@@ -63,7 +64,7 @@ public class PropostaService : IPropostaService
         return new PropostaDto
         {
             Id = proposta.Id,
-            ClienteId = proposta.ClienteId,
+            EventoId = proposta.EventoId,
             Status = proposta.Status,
             ValorTotal = proposta.ValorTotal,
 

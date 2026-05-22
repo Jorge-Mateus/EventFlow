@@ -14,7 +14,7 @@ namespace EventFlow.Infrastructure.Context
         public DbSet<Cliente> Clientes { get; set; }
 
         public DbSet<Proposta> Propostas { get; set; }
-
+        public DbSet<CategoriaOrcamento> CategoriasOrcamento { get; set; }
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
         {

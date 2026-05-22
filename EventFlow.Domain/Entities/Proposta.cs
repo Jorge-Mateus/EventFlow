@@ -4,30 +4,33 @@ namespace EventFlow.Domain.Entities
 {
     public class Proposta : BaseEntity
     {
-        public Guid ClienteId { get; private set; }
-
         public StatusProposta Status { get; private set; }
 
         public ICollection<PropostaItem> Itens { get; private set; }
             = new List<PropostaItem>();
-        public Cliente Cliente { get; private set; }
         public decimal ValorTotal =>
             Itens.Sum(x => x.Total);
 
+        public Guid EventoId { get; private set; }
+
+        public Evento Evento { get; private set; }
+
         protected Proposta() { }
 
-        public Proposta(Guid clienteId)
+        public Proposta(Guid eventoId)
         {
-            ClienteId = clienteId;
+            EventoId = eventoId;
             Status = StatusProposta.Rascunho;
         }
 
         public void AdicionarItem(
+            Guid categoriaOrcamentoId,
             string descricao,
             int quantidade,
             decimal valorUnitario)
         {
             Itens.Add(new PropostaItem(
+                categoriaOrcamentoId,
                 descricao,
                 quantidade,
                 valorUnitario));

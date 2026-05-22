@@ -11,7 +11,7 @@ namespace EventFlow.Application.DTOs.Proposta
     {
         public Guid Id { get; set; }
 
-        public Guid ClienteId { get; set; }
+        public Guid EventoId { get; set; }
 
         public StatusProposta Status { get; set; }
 

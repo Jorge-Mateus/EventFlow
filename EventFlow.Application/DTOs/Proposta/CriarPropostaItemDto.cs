@@ -11,7 +11,7 @@ namespace EventFlow.Application.DTOs.Proposta
         public string Descricao { get; set; }
 
         public int Quantidade { get; set; }
-
+        public Guid CategoriaOrcamentoId { get; set; }
         public decimal ValorUnitario { get; set; }
     }
 }
