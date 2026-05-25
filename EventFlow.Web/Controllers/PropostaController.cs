@@ -7,15 +7,11 @@ namespace EventFlow.Web.Controllers
 {
     public class PropostaController : Controller
     {
-        private readonly IPropostaService
-            _propostaService;
+        private readonly IPropostaService _propostaService;
 
-        private readonly IEventoService
-            _eventoService;
+        private readonly IEventoService _eventoService;
 
-        public PropostaController(
-            IPropostaService propostaService,
-            IEventoService eventoService)
+        public PropostaController(IPropostaService propostaService, IEventoService eventoService)
         {
             _propostaService = propostaService;
             _eventoService = eventoService;
@@ -24,8 +20,7 @@ namespace EventFlow.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var propostas =
-                await _propostaService
-                    .ObterTodosAsync();
+                await _propostaService.ObterTodosAsync();
 
             return View(propostas);
         }
@@ -38,8 +33,7 @@ namespace EventFlow.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CriarPropostaDto dto)
+        public async Task<IActionResult> Create(CriarPropostaDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -48,26 +42,30 @@ namespace EventFlow.Web.Controllers
                 return View(dto);
             }
 
-            await _propostaService
-                .CriarAsync(dto);
+            await _propostaService.CriarAsync(dto);
 
             return RedirectToAction(
                 nameof(Index));
         }
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var proposta = await _propostaService.ObterDetalheAsync(id);
+
+            if (proposta is null) return NotFound();
+
+            return View(proposta);
+        }
 
         private async Task CarregarEventos()
         {
-            var eventos =
-                await _eventoService
-                    .ObterTodosAsync();
+            var eventos = await _eventoService.ObterTodosAsync();
 
-            ViewBag.Eventos =
-                eventos.Select(x =>
+            ViewBag.Eventos = eventos.Select(x =>
                     new SelectListItem
                     {
                         Value = x.Id.ToString(),
                         Text = x.Nome
-                    });
+            });
         }
     }
 }

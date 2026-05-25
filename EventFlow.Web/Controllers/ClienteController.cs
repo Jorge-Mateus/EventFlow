@@ -8,16 +8,14 @@ namespace EventFlow.Web.Controllers
     {
         private readonly IClienteService _service;
 
-        public ClienteController(
-            IClienteService service)
+        public ClienteController(IClienteService service)
         {
             _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var clientes =
-                await _service.ObterTodosAsync();
+            var clientes = await _service.ObterTodosAsync();
 
             return View(clientes);
         }
@@ -28,8 +26,7 @@ namespace EventFlow.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CriarClienteDto dto)
+        public async Task<IActionResult> Create(CriarClienteDto dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);

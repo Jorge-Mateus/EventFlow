@@ -1,0 +1,50 @@
+﻿@model EventFlow.Application.DTOs.Proposta.PropostaDetalheDto
+
+<h1>Proposta</h1>
+
+<div class="mb-4">
+
+    <p>
+        <strong>Status:</strong>
+        @Model.Status
+    </p>
+
+    <p>
+        <strong>Total:</strong>
+        @Model.ValorTotal.ToString("C")
+    </p>
+
+</div>
+
+<h3>Itens</h3>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Qtd</th>
+            <th>Valor Unit.</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Itens)
+        {
+            <tr>
+                <td>@item.Descricao</td>
+                <td>@item.Quantidade</td>
+                <td>@item.ValorUnitario.ToString("C")</td>
+                <td>@item.Total.ToString("C")</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a class="btn btn-success">
+    Adicionar Item
+</a>

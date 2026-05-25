@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.DTOs.Proposta
 {
-
-    public class PropostaItemDto
+    public class PropostaDetalheDto
     {
         public Guid Id { get; set; }
-        public string Descricao { get; set; }
 
-        public int Quantidade { get; set; }
+        public string Status { get; set; }
 
-        public decimal ValorUnitario { get; set; }
+        public decimal ValorTotal { get; set; }
 
-        public decimal Total { get; set; }
+        public List<PropostaItemDto> Itens
+        { get; set; } = new();
     }
 }

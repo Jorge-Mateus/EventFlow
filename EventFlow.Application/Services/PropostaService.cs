@@ -79,4 +79,28 @@ public class PropostaService : IPropostaService
                 .ToList()
         };
     }
+
+    public async Task<PropostaDetalheDto?> ObterDetalheAsync(Guid id)
+    {
+        var proposta = await _repository.ObterPorIdAsync(id);
+
+        if (proposta is null)
+            return null;
+
+        return new PropostaDetalheDto
+        {
+            Id = proposta.Id,
+            Status = proposta.Status.ToString(),
+            ValorTotal = proposta.ValorTotal,
+            Itens = proposta.Itens.Select(x =>
+                new PropostaItemDto
+                {
+                    Id = x.Id,
+                    Descricao = x.Descricao,
+                    Quantidade = x.Quantidade,
+                    ValorUnitario = x.ValorUnitario,
+                    Total = x.Total
+                }).ToList()
+        };
+    }
 }

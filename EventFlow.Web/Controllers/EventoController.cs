@@ -11,9 +11,7 @@ namespace EventFlow.Web.Controllers
 
         private readonly IClienteService _clienteService;
 
-        public EventoController(
-            IEventoService eventoService,
-            IClienteService clienteService)
+        public EventoController(IEventoService eventoService, IClienteService clienteService)
         {
             _eventoService = eventoService;
             _clienteService = clienteService;
@@ -21,8 +19,7 @@ namespace EventFlow.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var eventos =
-                await _eventoService.ObterTodosAsync();
+            var eventos = await _eventoService.ObterTodosAsync();
 
             return View(eventos);
         }
@@ -55,13 +52,12 @@ namespace EventFlow.Web.Controllers
             var clientes =
                 await _clienteService.ObterTodosAsync();
 
-            ViewBag.Clientes =
-                clientes.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Nome
-                    });
+            ViewBag.Clientes = clientes.Select(x =>
+                new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Nome
+                });
         }
     }
 }

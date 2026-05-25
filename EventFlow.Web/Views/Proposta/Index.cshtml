@@ -16,6 +16,7 @@
         <tr>
             <th>Status</th>
             <th>Total</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -26,6 +27,9 @@
                 <td>@item.Status</td>
                 <td>
                     @item.ValorTotal.ToString("C")
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a>
                 </td>
             </tr>
         }

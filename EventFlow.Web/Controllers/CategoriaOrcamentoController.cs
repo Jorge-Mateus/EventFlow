@@ -11,16 +11,14 @@ namespace EventFlow.Web.Controllers
             ICategoriaOrcamentoService
             _service;
 
-        public CategoriaOrcamentoController(
-            ICategoriaOrcamentoService service)
+        public CategoriaOrcamentoController(ICategoriaOrcamentoService service)
         {
             _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var categorias =
-                await _service.ObterTodosAsync();
+            var categorias = await _service.ObterTodosAsync();
 
             return View(categorias);
         }
@@ -31,8 +29,7 @@ namespace EventFlow.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CriarCategoriaOrcamentoDto dto)
+        public async Task<IActionResult> Create(CriarCategoriaOrcamentoDto dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);
