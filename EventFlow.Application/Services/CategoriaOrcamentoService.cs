@@ -10,40 +10,27 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.Services
 {
-    public class CategoriaOrcamentoService
-    : ICategoriaOrcamentoService
+    public class CategoriaOrcamentoService : ICategoriaOrcamentoService
     {
-        private readonly
-            ICategoriaOrcamentoRepository
-            _repository;
+        private readonly ICategoriaOrcamentoRepository _repository;
 
-        public CategoriaOrcamentoService(
-            ICategoriaOrcamentoRepository repository)
+        public CategoriaOrcamentoService(ICategoriaOrcamentoRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task CriarAsync(
-            CriarCategoriaOrcamentoDto dto)
+        public async Task CriarAsync(CriarCategoriaOrcamentoDto dto)
         {
-            var categoria =
-                new CategoriaOrcamento(
-                    dto.Nome);
+            var categoria = new CategoriaOrcamento(dto.Nome);
 
-            await _repository
-                .AdicionarAsync(categoria);
+            await _repository.AdicionarAsync(categoria);
 
-            await _repository
-                .SalvarAlteracoesAsync();
+            await _repository.SalvarAlteracoesAsync();
         }
 
-        public async Task<
-            IEnumerable<CategoriaOrcamentoDto>>
-            ObterTodosAsync()
+        public async Task<IEnumerable<CategoriaOrcamentoDto>> ObterTodosAsync()
         {
-            var categorias =
-                await _repository
-                    .ObterTodosAsync();
+            var categorias = await _repository.ObterTodosAsync();
 
             return categorias.Select(x =>
                 new CategoriaOrcamentoDto
@@ -51,6 +38,42 @@ namespace EventFlow.Application.Services
                     Id = x.Id,
                     Nome = x.Nome
                 });
+        }
+        public async Task<CategoriaOrcamentoDetalheDto?> ObterDetalheAsync(Guid id)
+        {
+            var categoria = await _repository.ObterPorIdAsync(id);
+
+            if (categoria is null) return null;
+
+            return new CategoriaOrcamentoDetalheDto
+            {
+                Id = categoria.Id,
+                Nome = categoria.Nome
+            };
+        }
+
+        public async Task AtualizarAsync(AtualizarCategoriaOrcamentoDto dto)
+        {
+            var categoria = await _repository.ObterPorIdAsync(dto.Id);
+
+            if (categoria is null) return;
+
+            categoria.Atualizar(dto.Nome);
+
+            await _repository.AtualizarAsync(categoria);
+
+            await _repository.SalvarAlteracoesAsync();
+        }
+
+        public async Task ExcluirAsync(Guid id)
+        {
+            var categoria = await _repository.ObterPorIdAsync(id);
+
+            if (categoria is null) return;
+
+            await _repository.RemoverAsync(categoria);
+
+            await _repository.SalvarAlteracoesAsync();
         }
     }
 }

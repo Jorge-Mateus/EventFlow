@@ -8,16 +8,13 @@ using System.Data;
 
 namespace EventFlow.Infrastructure.Repositories;
 
-public class PropostaRepository
-    : IPropostaRepository
+public class PropostaRepository : IPropostaRepository
 {
     private readonly AppDbContext _context;
 
     private readonly IConfiguration _configuration;
 
-    public PropostaRepository(
-        AppDbContext context,
-        IConfiguration configuration)
+    public PropostaRepository(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
@@ -25,28 +22,23 @@ public class PropostaRepository
 
     private IDbConnection Connection()
     {
-        return new SqlConnection(
-            _configuration.GetConnectionString(
-                "DefaultConnection"));
+        return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
     }
 
-    public async Task AdicionarAsync(
-        Proposta proposta)
+    public async Task AdicionarAsync(Proposta proposta)
     {
         await _context.Propostas.AddAsync(
             proposta);
     }
 
-    public Task AtualizarAsync(
-        Proposta proposta)
+    public Task AtualizarAsync(Proposta proposta)
     {
         _context.Propostas.Update(proposta);
 
         return Task.CompletedTask;
     }
 
-    public async Task<Proposta?> ObterPorIdAsync(
-    Guid id)
+    public async Task<Proposta?> ObterPorIdAsync(Guid id)
     {
         var sql = @"
         SELECT
@@ -62,21 +54,16 @@ public class PropostaRepository
 
         using var connection = Connection();
 
-        using var multi =
-            await connection.QueryMultipleAsync(
+        using var multi = await connection.QueryMultipleAsync(
                 sql,
                 new { Id = id });
 
-        var proposta =
-            await multi
-                .ReadFirstOrDefaultAsync<Proposta>();
+        var proposta = await multi.ReadFirstOrDefaultAsync<Proposta>();
 
         if (proposta is null)
             return null;
 
-        var itens =
-            (await multi.ReadAsync<PropostaItem>())
-            .ToList();
+        var itens = (await multi.ReadAsync<PropostaItem>()).ToList();
 
         proposta.CarregarItens(itens);
 
@@ -100,6 +87,13 @@ public class PropostaRepository
 
     public async Task SalvarAlteracoesAsync()
     {
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoverAsync(Proposta proposta)
+    {
+        _context.Propostas.Remove(proposta);
+
         await _context.SaveChangesAsync();
     }
 }

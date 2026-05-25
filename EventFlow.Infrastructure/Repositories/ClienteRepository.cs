@@ -14,9 +14,7 @@ public class ClienteRepository : IClienteRepository
 
     private readonly IConfiguration _configuration;
 
-    public ClienteRepository(
-        AppDbContext context,
-        IConfiguration configuration)
+    public ClienteRepository(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
@@ -29,23 +27,19 @@ public class ClienteRepository : IClienteRepository
                 "DefaultConnection"));
     }
 
-    public async Task AdicionarAsync(
-        Cliente cliente)
+    public async Task AdicionarAsync(Cliente cliente)
     {
-        await _context.Clientes.AddAsync(
-            cliente);
+        await _context.Clientes.AddAsync(cliente);
     }
 
-    public Task AtualizarAsync(
-        Cliente cliente)
+    public Task AtualizarAsync(Cliente cliente)
     {
         _context.Clientes.Update(cliente);
 
         return Task.CompletedTask;
     }
 
-    public async Task<Cliente?> ObterPorIdAsync(
-        Guid id)
+    public async Task<Cliente?> ObterPorIdAsync(Guid id)
     {
         var sql = @"
             SELECT
@@ -68,8 +62,7 @@ public class ClienteRepository : IClienteRepository
                 new { Id = id });
     }
 
-    public async Task<IEnumerable<Cliente>>
-        ObterTodosAsync()
+    public async Task<IEnumerable<Cliente>> ObterTodosAsync()
     {
         var sql = @"
             SELECT
@@ -93,5 +86,11 @@ public class ClienteRepository : IClienteRepository
     public async Task SalvarAlteracoesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+    public Task RemoverAsync(Cliente cliente)
+    {
+        _context.Clientes.Remove(cliente);
+
+        return Task.CompletedTask;
     }
 }

@@ -19,19 +19,21 @@
 
         protected Evento() { }
 
-        public Evento(
-            Guid clienteId,
-            string nome,
-            DateTime dataEvento,
-            string localEvento,
-            int quantidadeConvidados)
+        public Evento(Guid clienteId, string nome, DateTime dataEvento, string localEvento, int quantidadeConvidados)
         {
             ClienteId = clienteId;
             Nome = nome;
             DataEvento = dataEvento;
             LocalEvento = localEvento;
-            QuantidadeConvidados =
-                quantidadeConvidados;
+            QuantidadeConvidados = quantidadeConvidados;
+        }
+        public void Atualizar(Guid clienteId, string nome, DateTime dataEvento, string localEvento, int quantidadeConvidados)
+        {
+            ClienteId = clienteId;
+            Nome = nome;
+            DataEvento = dataEvento;
+            LocalEvento = localEvento;
+            QuantidadeConvidados = quantidadeConvidados;
         }
     }
 }

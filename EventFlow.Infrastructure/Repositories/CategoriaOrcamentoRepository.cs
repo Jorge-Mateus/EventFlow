@@ -15,9 +15,7 @@ public class CategoriaOrcamentoRepository
 
     private readonly IConfiguration _configuration;
 
-    public CategoriaOrcamentoRepository(
-        AppDbContext context,
-        IConfiguration configuration)
+    public CategoriaOrcamentoRepository(AppDbContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
@@ -25,31 +23,22 @@ public class CategoriaOrcamentoRepository
 
     private IDbConnection Connection()
     {
-        return new SqlConnection(
-            _configuration.GetConnectionString(
-                "DefaultConnection"));
+        return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
     }
 
-    public async Task AdicionarAsync(
-        CategoriaOrcamento categoria)
+    public async Task AdicionarAsync(CategoriaOrcamento categoria)
     {
-        await _context
-            .CategoriasOrcamento
-            .AddAsync(categoria);
+        await _context.CategoriasOrcamento.AddAsync(categoria);
     }
 
-    public Task AtualizarAsync(
-        CategoriaOrcamento categoria)
+    public Task AtualizarAsync(CategoriaOrcamento categoria)
     {
-        _context
-            .CategoriasOrcamento
-            .Update(categoria);
+        _context.CategoriasOrcamento.Update(categoria);
 
         return Task.CompletedTask;
     }
 
-    public async Task<CategoriaOrcamento?>
-        ObterPorIdAsync(Guid id)
+    public async Task<CategoriaOrcamento?> ObterPorIdAsync(Guid id)
     {
         var sql = @"
             SELECT
@@ -60,15 +49,10 @@ public class CategoriaOrcamentoRepository
 
         using var connection = Connection();
 
-        return await connection
-            .QueryFirstOrDefaultAsync<
-                CategoriaOrcamento>(
-                    sql,
-                    new { Id = id });
+        return await connection.QueryFirstOrDefaultAsync<CategoriaOrcamento>(sql, new { Id = id });
     }
 
-    public async Task<IEnumerable<CategoriaOrcamento>>
-        ObterTodosAsync()
+    public async Task<IEnumerable<CategoriaOrcamento>> ObterTodosAsync()
     {
         var sql = @"
             SELECT
@@ -86,5 +70,11 @@ public class CategoriaOrcamentoRepository
     public async Task SalvarAlteracoesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+    public Task RemoverAsync(CategoriaOrcamento categoria)
+    {
+        _context.CategoriasOrcamento.Remove(categoria);
+
+        return Task.CompletedTask;
     }
 }

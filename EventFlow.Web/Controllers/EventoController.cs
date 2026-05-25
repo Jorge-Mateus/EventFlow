@@ -3,61 +3,112 @@ using EventFlow.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace EventFlow.Web.Controllers
+namespace EventFlow.Web.Controllers;
+
+public class EventoController : Controller
 {
-    public class EventoController : Controller
+    private readonly IEventoService _eventoService;
+    private readonly IClienteService _clienteService;
+
+    public EventoController(IEventoService eventoService, IClienteService clienteService)
     {
-        private readonly IEventoService _eventoService;
+        _eventoService = eventoService;
+        _clienteService = clienteService;
+    }
 
-        private readonly IClienteService _clienteService;
+    public async Task<IActionResult> Index()
+    {
+        var eventos = await _eventoService.ObterTodosAsync();
 
-        public EventoController(IEventoService eventoService, IClienteService clienteService)
-        {
-            _eventoService = eventoService;
-            _clienteService = clienteService;
-        }
+        return View(eventos);
+    }
 
-        public async Task<IActionResult> Index()
-        {
-            var eventos = await _eventoService.ObterTodosAsync();
+    public async Task<IActionResult> Create()
+    {
+        await CarregarClientes();
 
-            return View(eventos);
-        }
+        return View();
+    }
 
-        public async Task<IActionResult> Create()
+    [HttpPost]
+    public async Task<IActionResult> Create(CriarEventoDto dto)
+    {
+        if (!ModelState.IsValid)
         {
             await CarregarClientes();
-
-            return View();
+            return View(dto);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(
-            CriarEventoDto dto)
+        await _eventoService.CriarAsync(dto);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var evento =
+            await _eventoService.ObterDetalheAsync(id);
+
+        if (evento is null) return NotFound();
+
+        return View(evento);
+    }
+
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var evento = await _eventoService.ObterDetalheAsync(id);
+
+        if (evento is null) return NotFound();
+
+        await CarregarClientes();
+
+        var dto = new AtualizarEventoDto
         {
-            if (!ModelState.IsValid)
-            {
-                await CarregarClientes();
+            Id = evento.Id,
+            ClienteId = evento.ClienteId,
+            Nome = evento.Nome,
+            DataEvento = evento.DataEvento,
+            LocalEvento = evento.LocalEvento,
+            QuantidadeConvidados = evento.QuantidadeConvidados
+        };
 
-                return View(dto);
-            }
+        return View(dto);
+    }
 
-            await _eventoService.CriarAsync(dto);
-
-            return RedirectToAction(nameof(Index));
+    [HttpPost]
+    public async Task<IActionResult> Edit(AtualizarEventoDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            await CarregarClientes();
+            return View(dto);
         }
 
-        private async Task CarregarClientes()
-        {
-            var clientes =
-                await _clienteService.ObterTodosAsync();
+        await _eventoService.AtualizarAsync(dto);
 
-            ViewBag.Clientes = clientes.Select(x =>
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _eventoService.ExcluirAsync(id);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    private async Task CarregarClientes()
+    {
+        var clientes =
+            await _clienteService.ObterTodosAsync();
+
+        ViewBag.Clientes =
+            clientes.Select(x =>
                 new SelectListItem
                 {
                     Value = x.Id.ToString(),
                     Text = x.Nome
+
                 });
-        }
     }
 }

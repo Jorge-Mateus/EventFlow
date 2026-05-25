@@ -1,6 +1,7 @@
 ﻿using EventFlow.Application.DTOs.Proposta;
 using EventFlow.Application.Interfaces;
 using EventFlow.Domain.Entities;
+using EventFlow.Domain.Enums;
 using EventFlow.Domain.Interfaces;
 
 namespace EventFlow.Application.Services;
@@ -102,5 +103,31 @@ public class PropostaService : IPropostaService
                     Total = x.Total
                 }).ToList()
         };
+    }
+
+    public async Task AtualizarAsync(AtualizarPropostaDto dto)
+    {
+        var proposta = await _repository.ObterPorIdAsync(dto.Id);
+
+        if (proposta is null)
+            return;
+
+        proposta.Atualizar(dto.EventoId, (StatusProposta)dto.Status);
+
+        await _repository.AtualizarAsync(proposta);
+
+        await _repository.SalvarAlteracoesAsync();
+    }
+
+    public async Task ExcluirAsync(Guid id)
+    {
+        var proposta = await _repository.ObterPorIdAsync(id);
+
+        if (proposta is null)
+            return;
+
+        await _repository.RemoverAsync(proposta);
+
+        await _repository.SalvarAlteracoesAsync();
     }
 }

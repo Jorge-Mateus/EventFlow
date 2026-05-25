@@ -25,18 +25,12 @@ namespace EventFlow.Domain.Entities
             EventoId = eventoId;
             Status = StatusProposta.Rascunho;
         }
-        public void CarregarItens(
-    IEnumerable<PropostaItem> itens)
+        public void CarregarItens(IEnumerable<PropostaItem> itens)
         {
             _itens.Clear();
-
             _itens.AddRange(itens);
         }
-        public void AdicionarItem(
-            Guid categoriaOrcamentoId,
-            string descricao,
-            int quantidade,
-            decimal valorUnitario)
+        public void AdicionarItem(Guid categoriaOrcamentoId, string descricao, int quantidade, decimal valorUnitario)
         {
             _itens.Add(new PropostaItem(
                 categoriaOrcamentoId,
@@ -49,7 +43,11 @@ namespace EventFlow.Domain.Entities
         {
             Status = StatusProposta.Enviada;
         }
-
+        public void Atualizar(Guid eventoId, StatusProposta status)
+        {
+            EventoId = eventoId;
+            Status = status;
+        }
         public void Aprovar()
         {
             Status = StatusProposta.Aprovada;

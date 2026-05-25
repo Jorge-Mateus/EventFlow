@@ -14,5 +14,6 @@ namespace EventFlow.Domain.Interfaces
         Task<Proposta?> ObterPorIdAsync(Guid id);
         Task<IEnumerable<Proposta>> ObterTodosAsync();
         Task SalvarAlteracoesAsync();
+        Task RemoverAsync(Proposta proposta);
     }
 }

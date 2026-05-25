@@ -9,4 +9,5 @@ public interface IEventoRepository
     Task<Evento?> ObterPorIdAsync(Guid id);
     Task<IEnumerable<Evento>> ObterTodosAsync();
     Task SalvarAlteracoesAsync();
+    Task RemoverAsync(Evento evento);
 }

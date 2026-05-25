@@ -1,0 +1,33 @@
+﻿@model EventFlow.Application.DTOs.Proposta.AtualizarPropostaDto
+
+<h1>Editar Proposta</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Evento</label>
+
+        <select asp-for="EventoId"
+                asp-items="ViewBag.Eventos"
+                class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label>Status</label>
+
+        <select asp-for="Status"
+                class="form-select">
+            <option value="0">Rascunho</option>
+            <option value="1">Enviada</option>
+            <option value="2">Aprovada</option>
+        </select>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Salvar
+    </button>
+
+</form>

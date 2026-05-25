@@ -18,4 +18,10 @@ public class Cliente : BaseEntity
         Telefone = telefone;
         Email = email;
     }
+    public void Atualizar(string nome, string telefone, string email)
+    {
+        Nome = nome;
+        Telefone = telefone;
+        Email = email;
+    }
 }

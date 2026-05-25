@@ -1,0 +1,42 @@
+﻿@model EventFlow.Application.DTOs.Evento.AtualizarEventoDto
+
+<h1>Editar Evento</h1>
+<form asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Cliente</label>
+
+        <select asp-for="ClienteId"
+                asp-items="ViewBag.Clientes"
+                class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label>Nome</label>
+        <input asp-for="Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Data</label>
+        <input asp-for="DataEvento"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Local</label>
+        <input asp-for="LocalEvento"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Convidados</label>
+        <input asp-for="QuantidadeConvidados"
+               class="form-control" />
+    </div>
+
+    <button class="btn btn-success">
+        Salvar
+    </button>
+</form> 

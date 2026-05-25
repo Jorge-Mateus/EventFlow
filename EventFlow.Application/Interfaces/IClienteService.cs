@@ -10,7 +10,10 @@ namespace EventFlow.Application.Interfaces
     public interface IClienteService
     {
         Task CriarAsync(CriarClienteDto dto);
-        Task<IEnumerable<ClienteDto>>ObterTodosAsync();
+        Task<IEnumerable<ClienteDto>> ObterTodosAsync();
         Task<ClienteDto?> ObterPorIdAsync(Guid id);
+        Task<ClienteDetalheDto?> ObterDetalheAsync(Guid id);
+        Task AtualizarAsync(AtualizarClienteDto dto);
+        Task ExcluirAsync(Guid id);
     }
 }

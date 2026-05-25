@@ -1,9 +1,4 @@
 ﻿using EventFlow.Application.DTOs.Proposta;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventFlow.Application.Interfaces
 {
@@ -13,5 +8,7 @@ namespace EventFlow.Application.Interfaces
         Task<IEnumerable<PropostaDto>> ObterTodosAsync();
         Task<PropostaDto?> ObterPorIdAsync(Guid id);
         Task<PropostaDetalheDto?>ObterDetalheAsync(Guid id);
+        Task AtualizarAsync(AtualizarPropostaDto dto);
+        Task ExcluirAsync(Guid id);
     }
 }

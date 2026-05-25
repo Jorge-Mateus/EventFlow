@@ -9,10 +9,10 @@ namespace EventFlow.Application.Interfaces
 {
     public interface ICategoriaOrcamentoService
     {
-        Task CriarAsync(
-            CriarCategoriaOrcamentoDto dto);
-
-        Task<IEnumerable<CategoriaOrcamentoDto>>
-            ObterTodosAsync();
+        Task CriarAsync(CriarCategoriaOrcamentoDto dto);
+        Task<IEnumerable<CategoriaOrcamentoDto>> ObterTodosAsync();
+        Task<CategoriaOrcamentoDetalheDto?> ObterDetalheAsync(Guid id);
+        Task AtualizarAsync(AtualizarCategoriaOrcamentoDto dto);
+        Task ExcluirAsync(Guid id);
     }
 }

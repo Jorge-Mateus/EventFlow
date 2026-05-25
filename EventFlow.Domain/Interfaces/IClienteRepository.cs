@@ -14,5 +14,6 @@ namespace EventFlow.Domain.Interfaces
         Task<Cliente?> ObterPorIdAsync(Guid id);
         Task<IEnumerable<Cliente>> ObterTodosAsync();
         Task SalvarAlteracoesAsync();
+        Task RemoverAsync(Cliente cliente);
     }
 }

@@ -1,5 +1,4 @@
-﻿using EventFlow.Domain.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.DTOs.Proposta
 {
-    public class PropostaDto
+    public class AtualizarPropostaDto
     {
         public Guid Id { get; set; }
-
         public Guid EventoId { get; set; }
-
-        public StatusProposta Status { get; set; }
-
-        public decimal ValorTotal { get; set; }
-
-        public List<PropostaItemDto> Itens { get; set; } = new();
+        public int Status { get; set; }
     }
 }

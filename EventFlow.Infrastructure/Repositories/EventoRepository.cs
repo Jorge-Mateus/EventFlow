@@ -8,8 +8,7 @@ using System.Data;
 
 namespace EventFlow.Infrastructure.Repositories;
 
-public class EventoRepository
-    : IEventoRepository
+public class EventoRepository : IEventoRepository
 {
     private readonly AppDbContext _context;
 
@@ -80,5 +79,11 @@ public class EventoRepository
     public async Task SalvarAlteracoesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public Task RemoverAsync(Evento evento)
+    {
+        _context.Eventos.Remove(evento);
+        return Task.CompletedTask;
     }
 }

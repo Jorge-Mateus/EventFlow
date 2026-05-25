@@ -14,4 +14,8 @@ public class CategoriaOrcamento : BaseEntity
     {
         Nome = nome;
     }
+    public void Atualizar(string nome)
+    {
+        Nome = nome;
+    }
 }
