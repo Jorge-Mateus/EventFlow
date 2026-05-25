@@ -8,7 +8,7 @@
 
 <form asp-action="Create" method="post">
 
-    <div class="mb-3">
+    <div class="mb-4">
         <label class="form-label">
             Evento
         </label>
@@ -22,9 +22,102 @@
         </select>
     </div>
 
+    <hr />
+
+    <h3>Categorias</h3>
+
+    <div id="categorias-container"></div>
+
+    <button type="button"
+            class="btn btn-primary mb-4"
+            onclick="adicionarCategoria()">
+        Adicionar Categoria
+    </button>
+
+    <br />
+
     <button type="submit"
             class="btn btn-success">
-        Salvar
+        Salvar Proposta
     </button>
 
 </form>
+
+<script>
+    let categoriaIndex = 0;
+
+    function adicionarCategoria() {
+
+        const html = `
+            <div class="card mb-3 p-3">
+
+                <div class="mb-2">
+                    <label>Categoria</label>
+
+                    <select name="Categorias[${categoriaIndex}].CategoriaOrcamentoId"
+                            class="form-select">
+
+                        @foreach (var categoria in ViewBag.Categorias)
+                        {
+                                <option value="@categoria.Value">
+                                        @categoria.Text
+                                </option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label>Valor</label>
+
+                    <input type="number"
+                           step="0.01"
+                           name="Categorias[${categoriaIndex}].Valor"
+                           class="form-control" />
+                </div>
+
+                <div id="itens-${categoriaIndex}"></div>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="adicionarItem(${categoriaIndex})">
+                    Adicionar Detalhe
+                </button>
+
+            </div>
+        `;
+
+        document
+            .getElementById("categorias-container")
+            .insertAdjacentHTML(
+                "beforeend",
+                html);
+
+        categoriaIndex++;
+    }
+
+    function adicionarItem(categoriaIdx) {
+
+        const container =
+            document.getElementById(
+                `itens-${categoriaIdx}`);
+
+        const itemIndex =
+            container.children.length;
+
+        const html = `
+            <div class="mb-2">
+
+                <input type="text"
+                       name="Categorias[${categoriaIdx}].Itens[${itemIndex}].Descricao"
+                       class="form-control"
+                       placeholder="Descrição do detalhe" />
+
+            </div>
+        `;
+
+        container.insertAdjacentHTML(
+            "beforeend",
+            html);
+    }
+</script>

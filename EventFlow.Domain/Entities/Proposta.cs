@@ -9,7 +9,7 @@ namespace EventFlow.Domain.Entities
         public StatusProposta Status { get; private set; }
         public IReadOnlyCollection<PropostaCategoria> Categorias => _categorias.AsReadOnly();
 
-        public decimal ValorTotal => _categorias.Sum(x => x.Valor);
+        public decimal ValorTotal { get; private set; }
 
         public Guid EventoId { get; private set; }
 

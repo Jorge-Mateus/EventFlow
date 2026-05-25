@@ -91,12 +91,41 @@ namespace EventFlow.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropostaItens",
+                name: "PropostaCategorias",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PropostaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    CategoriaOrcamentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropostaCategorias", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropostaCategorias_CategoriasOrcamento_CategoriaOrcamentoId",
+                        column: x => x.CategoriaOrcamentoId,
+                        principalTable: "CategoriasOrcamento",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PropostaCategorias_Propostas_PropostaId",
+                        column: x => x.PropostaId,
+                        principalTable: "Propostas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropostaItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PropostaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     ValorUnitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoriaOrcamentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -106,17 +135,39 @@ namespace EventFlow.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropostaItens", x => x.Id);
+                    table.PrimaryKey("PK_PropostaItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PropostaItens_CategoriasOrcamento_CategoriaOrcamentoId",
+                        name: "FK_PropostaItem_CategoriasOrcamento_CategoriaOrcamentoId",
                         column: x => x.CategoriaOrcamentoId,
                         principalTable: "CategoriasOrcamento",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PropostaItens_Propostas_PropostaId",
+                        name: "FK_PropostaItem_Propostas_PropostaId",
                         column: x => x.PropostaId,
                         principalTable: "Propostas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropostaCategoriaItens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PropostaCategoriaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropostaCategoriaItens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropostaCategoriaItens_PropostaCategorias_PropostaCategoriaId",
+                        column: x => x.PropostaCategoriaId,
+                        principalTable: "PropostaCategorias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -127,13 +178,28 @@ namespace EventFlow.Infrastructure.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropostaItens_CategoriaOrcamentoId",
-                table: "PropostaItens",
+                name: "IX_PropostaCategoriaItens_PropostaCategoriaId",
+                table: "PropostaCategoriaItens",
+                column: "PropostaCategoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropostaCategorias_CategoriaOrcamentoId",
+                table: "PropostaCategorias",
                 column: "CategoriaOrcamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropostaItens_PropostaId",
-                table: "PropostaItens",
+                name: "IX_PropostaCategorias_PropostaId",
+                table: "PropostaCategorias",
+                column: "PropostaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropostaItem_CategoriaOrcamentoId",
+                table: "PropostaItem",
+                column: "CategoriaOrcamentoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropostaItem_PropostaId",
+                table: "PropostaItem",
                 column: "PropostaId");
 
             migrationBuilder.CreateIndex(
@@ -146,7 +212,13 @@ namespace EventFlow.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PropostaItens");
+                name: "PropostaCategoriaItens");
+
+            migrationBuilder.DropTable(
+                name: "PropostaItem");
+
+            migrationBuilder.DropTable(
+                name: "PropostaCategorias");
 
             migrationBuilder.DropTable(
                 name: "CategoriasOrcamento");

@@ -42,20 +42,31 @@ public class PropostaRepository : IPropostaRepository
      Guid id)
     {
         var sql = @"
-        SELECT *
-        FROM Propostas
-        WHERE Id = @Id;
+            SELECT
+                p.*,
+                ISNULL(SUM(pc.Valor), 0) AS ValorTotal
+            FROM Propostas p
+            LEFT JOIN PropostaCategorias pc
+                ON pc.PropostaId = p.Id
+            WHERE p.Id = @Id
+            GROUP BY
+                p.Id,
+                p.EventoId,
+                p.Status,
+                p.CreatedAt,
+                p.UpdatedAt,
+                p.Active;
 
-        SELECT *
-        FROM PropostaCategorias
-        WHERE PropostaId = @Id;
+            SELECT *
+            FROM PropostaCategorias
+            WHERE PropostaId = @Id;
 
-        SELECT pci.*
-        FROM PropostaCategoriaItens pci
-        INNER JOIN PropostaCategorias pc
-            ON pc.Id = pci.PropostaCategoriaId
-        WHERE pc.PropostaId = @Id;
-    ";
+            SELECT pci.*
+            FROM PropostaCategoriaItens pci
+            INNER JOIN PropostaCategorias pc
+                ON pc.Id = pci.PropostaCategoriaId
+            WHERE pc.PropostaId = @Id;
+        ";
 
         using var connection = Connection();
 
@@ -92,19 +103,26 @@ public class PropostaRepository : IPropostaRepository
         return proposta;
     }
 
-    public async Task<IEnumerable<Proposta>>
-        ObterTodosAsync()
+    public async Task<IEnumerable<Proposta>> ObterTodosAsync()
     {
         var sql = @"
             SELECT
-                *
-            FROM Propostas
+                p.*,
+                ISNULL(SUM(pc.Valor), 0) AS ValorTotal
+            FROM Propostas p
+            LEFT JOIN PropostaCategorias pc ON pc.PropostaId = p.Id
+            GROUP BY
+                    p.Id,
+                    p.EventoId,
+                    p.Status,
+                    p.CreatedAt,
+                    p.UpdatedAt,
+                    p.Active
         ";
 
         using var connection = Connection();
 
-        return await connection
-            .QueryAsync<Proposta>(sql);
+        return await connection.QueryAsync<Proposta>(sql);
     }
 
     public async Task SalvarAlteracoesAsync()

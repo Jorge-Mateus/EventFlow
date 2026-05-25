@@ -151,6 +151,69 @@ namespace EventFlow.Infrastructure.Migrations
                     b.ToTable("Propostas", (string)null);
                 });
 
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaCategoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CategoriaOrcamentoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PropostaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaOrcamentoId");
+
+                    b.HasIndex("PropostaId");
+
+                    b.ToTable("PropostaCategorias", (string)null);
+                });
+
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaCategoriaItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<Guid>("PropostaCategoriaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropostaCategoriaId");
+
+                    b.ToTable("PropostaCategoriaItens", (string)null);
+                });
+
             modelBuilder.Entity("EventFlow.Domain.Entities.PropostaItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -168,8 +231,7 @@ namespace EventFlow.Infrastructure.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PropostaId")
                         .HasColumnType("uniqueidentifier");
@@ -189,7 +251,7 @@ namespace EventFlow.Infrastructure.Migrations
 
                     b.HasIndex("PropostaId");
 
-                    b.ToTable("PropostaItens", (string)null);
+                    b.ToTable("PropostaItem");
                 });
 
             modelBuilder.Entity("EventFlow.Domain.Entities.Evento", b =>
@@ -214,16 +276,46 @@ namespace EventFlow.Infrastructure.Migrations
                     b.Navigation("Evento");
                 });
 
-            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaItem", b =>
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaCategoria", b =>
                 {
                     b.HasOne("EventFlow.Domain.Entities.CategoriaOrcamento", "CategoriaOrcamento")
-                        .WithMany("Itens")
+                        .WithMany()
                         .HasForeignKey("CategoriaOrcamentoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EventFlow.Domain.Entities.Proposta", "Proposta")
+                        .WithMany("Categorias")
+                        .HasForeignKey("PropostaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoriaOrcamento");
+
+                    b.Navigation("Proposta");
+                });
+
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaCategoriaItem", b =>
+                {
+                    b.HasOne("EventFlow.Domain.Entities.PropostaCategoria", "PropostaCategoria")
                         .WithMany("Itens")
+                        .HasForeignKey("PropostaCategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PropostaCategoria");
+                });
+
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaItem", b =>
+                {
+                    b.HasOne("EventFlow.Domain.Entities.CategoriaOrcamento", "CategoriaOrcamento")
+                        .WithMany("Itens")
+                        .HasForeignKey("CategoriaOrcamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventFlow.Domain.Entities.Proposta", "Proposta")
+                        .WithMany()
                         .HasForeignKey("PropostaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -249,6 +341,11 @@ namespace EventFlow.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("EventFlow.Domain.Entities.Proposta", b =>
+                {
+                    b.Navigation("Categorias");
+                });
+
+            modelBuilder.Entity("EventFlow.Domain.Entities.PropostaCategoria", b =>
                 {
                     b.Navigation("Itens");
                 });

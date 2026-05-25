@@ -20,22 +20,26 @@ public class PropostaService : IPropostaService
     {
         var proposta = new Proposta(dto.EventoId);
 
-        foreach (var categoria in dto.Categorias)
+        foreach (var categoriaDto in dto.Categorias)
         {
-            proposta.AdicionarCategoria(
-                categoria.CategoriaOrcamentoId,
-                categoria.Valor);
+            proposta.AdicionarCategoria(categoriaDto.CategoriaOrcamentoId, categoriaDto.Valor);
+
+            var categoria = proposta.Categorias.Last();
+
+            foreach (var itemDto in categoriaDto.Itens)
+            {
+                categoria.AdicionarItem(itemDto.Descricao);
+            }
         }
+
         await _repository.AdicionarAsync(proposta);
 
         await _repository.SalvarAlteracoesAsync();
     }
 
-    public async Task<IEnumerable<PropostaDto>>
-        ObterTodosAsync()
+    public async Task<IEnumerable<PropostaDto>> ObterTodosAsync()
     {
-        var propostas =
-            await _repository.ObterTodosAsync();
+        var propostas = await _repository.ObterTodosAsync();
 
         return propostas.Select(x =>
             new PropostaDto

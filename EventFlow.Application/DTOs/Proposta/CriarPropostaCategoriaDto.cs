@@ -10,5 +10,6 @@ namespace EventFlow.Application.DTOs.Proposta
     {
         public Guid CategoriaOrcamentoId { get; set; }
         public decimal Valor { get; set; }
+        public List<CriarPropostaCategoriaItemDto> Itens { get; set; }
     }
 }
