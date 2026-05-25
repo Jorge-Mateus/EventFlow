@@ -4,11 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventFlow.Infrastructure.Mappings;
 
-public class PropostaMap :
-    IEntityTypeConfiguration<Proposta>
+public class PropostaMap : IEntityTypeConfiguration<Proposta>
 {
-    public void Configure(
-        EntityTypeBuilder<Proposta> builder)
+    public void Configure(EntityTypeBuilder<Proposta> builder)
     {
         builder.ToTable("Propostas");
 
@@ -20,13 +18,14 @@ public class PropostaMap :
         builder.Ignore(x => x.ValorTotal);
 
         builder
-            .HasMany(x => x.Itens)
+            .HasMany(x => x.Categorias)
             .WithOne(x => x.Proposta)
             .HasForeignKey(x => x.PropostaId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata
-            .FindNavigation(nameof(Proposta.Itens))
+            .FindNavigation(
+                nameof(Proposta.Categorias))
             ?.SetPropertyAccessMode(
                 PropertyAccessMode.Field);
 

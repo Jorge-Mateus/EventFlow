@@ -10,6 +10,7 @@ namespace EventFlow.Application.DTOs.Proposta
     {
         public Guid ClienteId { get; set; }
         public Guid EventoId { get; set; }
-        public List<CriarPropostaItemDto> Itens { get; set; } = new();
+        public List<CriarPropostaCategoriaDto> Categorias { get; set; } = new();
+
     }
 }

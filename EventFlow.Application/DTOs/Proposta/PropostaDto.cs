@@ -17,6 +17,6 @@ namespace EventFlow.Application.DTOs.Proposta
 
         public decimal ValorTotal { get; set; }
 
-        public List<PropostaItemDto> Itens { get; set; } = new();
+        public List<PropostaCategoriaDto> Categorias { get; set; } = new();
     }
 }

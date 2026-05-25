@@ -16,35 +16,51 @@
 
 </div>
 
-<h3>Itens</h3>
+<h3>Categorias</h3>
 
-<table class="table table-bordered">
+@foreach (var categoria in Model.Categorias)
+{
+    <div class="card mb-4">
 
-    <thead>
-        <tr>
-            <th>Descrição</th>
-            <th>Qtd</th>
-            <th>Valor Unit.</th>
-            <th>Total</th>
-        </tr>
-    </thead>
+        <div class="card-header d-flex justify-content-between">
 
-    <tbody>
+            <strong>
+                Categoria
+            </strong>
 
-        @foreach (var item in Model.Itens)
-        {
-            <tr>
-                <td>@item.Descricao</td>
-                <td>@item.Quantidade</td>
-                <td>@item.ValorUnitario.ToString("C")</td>
-                <td>@item.Total.ToString("C")</td>
-            </tr>
-        }
+            <strong>
+                @categoria.Valor.ToString("C")
+            </strong>
 
-    </tbody>
+        </div>
 
-</table>
+        <div class="card-body">
+
+            @if (categoria.Itens.Any())
+            {
+                <ul class="mb-0">
+
+                    @foreach (var item in categoria.Itens)
+                    {
+                        <li>
+                            @item.Descricao
+                        </li>
+                    }
+
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">
+                    Nenhum detalhe cadastrado.
+                </p>
+            }
+
+        </div>
+
+    </div>
+}
 
 <a class="btn btn-success">
-    Adicionar Item
+    Adicionar Categoria
 </a>

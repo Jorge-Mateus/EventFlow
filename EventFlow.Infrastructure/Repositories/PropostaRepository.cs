@@ -38,34 +38,56 @@ public class PropostaRepository : IPropostaRepository
         return Task.CompletedTask;
     }
 
-    public async Task<Proposta?> ObterPorIdAsync(Guid id)
+    public async Task<Proposta?> ObterPorIdAsync(
+     Guid id)
     {
         var sql = @"
-        SELECT
-            *
+        SELECT *
         FROM Propostas
         WHERE Id = @Id;
 
-        SELECT
-            *
-        FROM PropostaItens
+        SELECT *
+        FROM PropostaCategorias
         WHERE PropostaId = @Id;
+
+        SELECT pci.*
+        FROM PropostaCategoriaItens pci
+        INNER JOIN PropostaCategorias pc
+            ON pc.Id = pci.PropostaCategoriaId
+        WHERE pc.PropostaId = @Id;
     ";
 
         using var connection = Connection();
 
-        using var multi = await connection.QueryMultipleAsync(
+        using var multi =
+            await connection.QueryMultipleAsync(
                 sql,
                 new { Id = id });
 
-        var proposta = await multi.ReadFirstOrDefaultAsync<Proposta>();
+        var proposta =
+            await multi.ReadFirstOrDefaultAsync<Proposta>();
 
         if (proposta is null)
             return null;
 
-        var itens = (await multi.ReadAsync<PropostaItem>()).ToList();
+        var categorias =
+            (await multi.ReadAsync<PropostaCategoria>())
+            .ToList();
 
-        proposta.CarregarItens(itens);
+        var itens =
+            (await multi.ReadAsync<PropostaCategoriaItem>())
+            .ToList();
+
+        foreach (var categoria in categorias)
+        {
+            categoria.CarregarItens(
+                itens.Where(x =>
+                    x.PropostaCategoriaId ==
+                    categoria.Id));
+        }
+
+        proposta.CarregarCategorias(
+            categorias);
 
         return proposta;
     }

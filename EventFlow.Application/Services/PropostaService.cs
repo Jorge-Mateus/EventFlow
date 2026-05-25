@@ -16,23 +16,17 @@ public class PropostaService : IPropostaService
         _repository = repository;
     }
 
-    public async Task CriarAsync(
-        CriarPropostaDto dto)
+    public async Task CriarAsync(CriarPropostaDto dto)
     {
-        var proposta = new Proposta(
-            dto.EventoId);
+        var proposta = new Proposta(dto.EventoId);
 
-        foreach (var item in dto.Itens)
+        foreach (var categoria in dto.Categorias)
         {
-            proposta.AdicionarItem(
-                item.CategoriaOrcamentoId,
-                item.Descricao,
-                item.Quantidade,
-                item.ValorUnitario);
+            proposta.AdicionarCategoria(
+                categoria.CategoriaOrcamentoId,
+                categoria.Valor);
         }
-
-        await _repository.AdicionarAsync(
-            proposta);
+        await _repository.AdicionarAsync(proposta);
 
         await _repository.SalvarAlteracoesAsync();
     }
@@ -53,8 +47,8 @@ public class PropostaService : IPropostaService
             });
     }
 
-    public async Task<PropostaDto?>
-        ObterPorIdAsync(Guid id)
+    public async Task<PropostaDto?> ObterPorIdAsync(
+    Guid id)
     {
         var proposta =
             await _repository.ObterPorIdAsync(id);
@@ -69,21 +63,33 @@ public class PropostaService : IPropostaService
             Status = proposta.Status,
             ValorTotal = proposta.ValorTotal,
 
-            Itens = proposta.Itens
-                .Select(item => new PropostaItemDto
-                {
-                    Descricao = item.Descricao,
-                    Quantidade = item.Quantidade,
-                    ValorUnitario = item.ValorUnitario,
-                    Total = item.Total
-                })
+            Categorias = proposta.Categorias
+                .Select(categoria =>
+                    new PropostaCategoriaDto
+                    {
+                        CategoriaOrcamentoId =
+                            categoria.CategoriaOrcamentoId,
+
+                        Valor = categoria.Valor,
+
+                        Itens = categoria.Itens
+                            .Select(item =>
+                                new PropostaCategoriaItemDto
+                                {
+                                    Descricao =
+                                        item.Descricao
+                                })
+                            .ToList()
+                    })
                 .ToList()
         };
     }
 
-    public async Task<PropostaDetalheDto?> ObterDetalheAsync(Guid id)
+    public async Task<PropostaDetalheDto?>
+    ObterDetalheAsync(Guid id)
     {
-        var proposta = await _repository.ObterPorIdAsync(id);
+        var proposta =
+            await _repository.ObterPorIdAsync(id);
 
         if (proposta is null)
             return null;
@@ -93,15 +99,29 @@ public class PropostaService : IPropostaService
             Id = proposta.Id,
             Status = proposta.Status.ToString(),
             ValorTotal = proposta.ValorTotal,
-            Itens = proposta.Itens.Select(x =>
-                new PropostaItemDto
-                {
-                    Id = x.Id,
-                    Descricao = x.Descricao,
-                    Quantidade = x.Quantidade,
-                    ValorUnitario = x.ValorUnitario,
-                    Total = x.Total
-                }).ToList()
+
+            Categorias = proposta.Categorias
+                .Select(categoria =>
+                    new PropostaCategoriaDetalheDto
+                    {
+                        Id = categoria.Id,
+
+                        CategoriaOrcamentoId =
+                            categoria.CategoriaOrcamentoId,
+
+                        Valor = categoria.Valor,
+
+                        Itens = categoria.Itens
+                            .Select(item =>
+                                new PropostaCategoriaItemDto
+                                {
+                                    Id = item.Id,
+                                    Descricao =
+                                        item.Descricao
+                                })
+                            .ToList()
+                    })
+                .ToList()
         };
     }
 

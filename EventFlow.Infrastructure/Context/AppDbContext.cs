@@ -5,23 +5,14 @@ namespace EventFlow.Infrastructure.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(
-        DbContextOptions<AppDbContext> options)
-        : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-
-    public DbSet<Cliente> Clientes
-    { get; set; }
-
-    public DbSet<Evento> Eventos
-    { get; set; }
-
-    public DbSet<Proposta> Propostas
-    { get; set; }
-
-    public DbSet<PropostaItem> PropostaItens
-    { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Evento> Eventos { get; set; }
+    public DbSet<Proposta> Propostas { get; set; }
+    public DbSet<PropostaCategoria> PropostaCategorias { get; set; }
+    public DbSet<PropostaCategoriaItem> PropostaCategoriaItens { get; set; }
 
     public DbSet<CategoriaOrcamento>
         CategoriasOrcamento

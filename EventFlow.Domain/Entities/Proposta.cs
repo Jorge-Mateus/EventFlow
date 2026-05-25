@@ -4,15 +4,12 @@ namespace EventFlow.Domain.Entities
 {
     public class Proposta : BaseEntity
     {
-        private readonly List<PropostaItem> _itens
-            = new();
+        private readonly List<PropostaCategoria> _categorias = new();
 
         public StatusProposta Status { get; private set; }
+        public IReadOnlyCollection<PropostaCategoria> Categorias => _categorias.AsReadOnly();
 
-        public IReadOnlyCollection<PropostaItem> Itens => _itens.AsReadOnly();
-
-        public decimal ValorTotal =>
-            _itens.Sum(x => x.Total);
+        public decimal ValorTotal => _categorias.Sum(x => x.Valor);
 
         public Guid EventoId { get; private set; }
 
@@ -25,29 +22,29 @@ namespace EventFlow.Domain.Entities
             EventoId = eventoId;
             Status = StatusProposta.Rascunho;
         }
-        public void CarregarItens(IEnumerable<PropostaItem> itens)
+
+        public void CarregarCategorias(IEnumerable<PropostaCategoria> categorias)
         {
-            _itens.Clear();
-            _itens.AddRange(itens);
+            _categorias.Clear();
+            _categorias.AddRange(categorias);
         }
-        public void AdicionarItem(Guid categoriaOrcamentoId, string descricao, int quantidade, decimal valorUnitario)
+
+        public void AdicionarCategoria(Guid categoriaOrcamentoId, decimal valor)
         {
-            _itens.Add(new PropostaItem(
-                categoriaOrcamentoId,
-                descricao,
-                quantidade,
-                valorUnitario));
+            _categorias.Add(new PropostaCategoria(categoriaOrcamentoId, valor));
+        }
+
+        public void Atualizar(Guid eventoId, StatusProposta status)
+        {
+            EventoId = eventoId;
+            Status = status;
         }
 
         public void Enviar()
         {
             Status = StatusProposta.Enviada;
         }
-        public void Atualizar(Guid eventoId, StatusProposta status)
-        {
-            EventoId = eventoId;
-            Status = status;
-        }
+
         public void Aprovar()
         {
             Status = StatusProposta.Aprovada;
