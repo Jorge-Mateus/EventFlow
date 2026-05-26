@@ -10,9 +10,13 @@ namespace EventFlow.Domain.Enums
     {
         Rascunho = 1,
         Enviada = 2,
-        EmNegociacao = 3,
-        Aprovada = 4,
-        Rejeitada = 5,
-        Cancelada = 6
+        EmAjuste = 3,
+        VisitaTecnicaAgendada = 4,
+        EmProjeto3D = 5,
+        ProjetoAprovado = 6,
+        Aprovada = 7,
+        EmMontagem = 8,
+        Finalizada = 9,
+        Cancelada = 10
     }
 }

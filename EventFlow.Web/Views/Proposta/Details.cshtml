@@ -1,66 +1,158 @@
 ﻿@model EventFlow.Application.DTOs.Proposta.PropostaDetalheDto
 
-<h1>Proposta</h1>
-
-<div class="mb-4">
-
-    <p>
-        <strong>Status:</strong>
-        @Model.Status
-    </p>
-
-    <p>
-        <strong>Total:</strong>
-        @Model.ValorTotal.ToString("C")
-    </p>
-
-</div>
-
-<h3>Categorias</h3>
-
-@foreach (var categoria in Model.Categorias)
-{
-    <div class="card mb-4">
-
-        <div class="card-header d-flex justify-content-between">
-
-            <strong>
-                Categoria
-            </strong>
-
-            <strong>
-                @categoria.Valor.ToString("C")
-            </strong>
-
-        </div>
-
-        <div class="card-body">
-
-            @if (categoria.Itens.Any())
-            {
-                <ul class="mb-0">
-
-                    @foreach (var item in categoria.Itens)
-                    {
-                        <li>
-                            @item.Descricao
-                        </li>
-                    }
-
-                </ul>
-            }
-            else
-            {
-                <p class="text-muted">
-                    Nenhum detalhe cadastrado.
-                </p>
-            }
-
-        </div>
-
-    </div>
+@{
+    ViewData["Title"] = "Detalhes da Proposta";
 }
 
-<a class="btn btn-success">
-    Adicionar Categoria
-</a>
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1>Proposta</h1>
+
+        <span class="badge bg-primary fs-6">
+            @Model.Status
+        </span>
+
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <p>
+                <strong>Total:</strong>
+                @Model.ValorTotal.ToString("C")
+            </p>
+
+        </div>
+    </div>
+
+    <h3 class="mb-3">
+        Categorias do Orçamento
+    </h3>
+
+    @foreach (var categoria in Model.Categorias)
+    {
+        <div class="card mb-3 shadow-sm">
+
+            <div class="card-header d-flex justify-content-between">
+
+                <strong>
+                    Categoria
+                </strong>
+
+                <strong>
+                    @categoria.Valor.ToString("C")
+                </strong>
+
+            </div>
+
+            <div class="card-body">
+
+                @if (categoria.Itens.Any())
+                {
+                    <ul class="mb-0">
+
+                        @foreach (var item in categoria.Itens)
+                        {
+                            <li>
+                                @item.Descricao
+                            </li>
+                        }
+
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">
+                        Nenhum detalhe cadastrado.
+                    </p>
+                }
+
+            </div>
+
+        </div>
+    }
+
+    <hr class="my-4" />
+
+    <h4 class="mb-3">
+        Operações
+    </h4>
+
+    <div class="mb-4">
+
+        <a asp-action="AgendarVisita"
+           asp-route-propostaId="@Model.Id"
+           class="btn btn-info me-2">
+            Agendar Visita Técnica
+        </a>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            Editar Proposta
+        </a>
+
+    </div>
+
+    <h4 class="mb-3">
+        Fluxo da Proposta
+    </h4>
+
+    <form asp-action="AlterarStatus"
+          method="post">
+
+        <input type="hidden"
+               name="id"
+               value="@Model.Id" />
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <button class="btn btn-primary"
+                    name="status"
+                    value="2">
+                Enviar
+            </button>
+
+            <button class="btn btn-warning"
+                    name="status"
+                    value="3">
+                Ajuste
+            </button>
+
+            <button class="btn btn-info"
+                    name="status"
+                    value="4">
+                Visita Técnica
+            </button>
+
+            <button class="btn btn-secondary"
+                    name="status"
+                    value="5">
+                Projeto 3D
+            </button>
+
+            <button class="btn btn-dark"
+                    name="status"
+                    value="8">
+                Montagem
+            </button>
+
+            <button class="btn btn-success"
+                    name="status"
+                    value="9">
+                Finalizar
+            </button>
+
+            <button class="btn btn-danger"
+                    name="status"
+                    value="10">
+                Cancelar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

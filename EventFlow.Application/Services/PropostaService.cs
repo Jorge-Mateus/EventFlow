@@ -122,10 +122,8 @@ public class PropostaService : IPropostaService
                                     Id = item.Id,
                                     Descricao =
                                         item.Descricao
-                                })
-                            .ToList()
-                    })
-                .ToList()
+                                }).ToList()
+                    }).ToList()
         };
     }
 
@@ -151,6 +149,52 @@ public class PropostaService : IPropostaService
             return;
 
         await _repository.RemoverAsync(proposta);
+
+        await _repository.SalvarAlteracoesAsync();
+    }
+
+    public async Task AlterarStatusAsync(Guid id, StatusProposta status)
+    {
+        var proposta = await _repository.ObterPorIdAsync(id);
+
+        if (proposta is null) throw new Exception("Proposta não encontrada.");
+
+        switch (status)
+        {
+            case StatusProposta.Enviada:
+                proposta.Enviar();
+                break;
+
+            case StatusProposta.EmAjuste:
+                proposta.SolicitarAjuste();
+                break;
+
+            case StatusProposta.VisitaTecnicaAgendada:
+                proposta.AgendarVisitaTecnica();
+                break;
+
+            case StatusProposta.EmProjeto3D:
+                proposta.IniciarProjeto3D();
+                break;
+
+            case StatusProposta.ProjetoAprovado:
+                proposta.AprovarProjeto();
+                break;
+
+            case StatusProposta.EmMontagem:
+                proposta.IniciarMontagem();
+                break;
+
+            case StatusProposta.Finalizada:
+                proposta.Finalizar();
+                break;
+
+            case StatusProposta.Cancelada:
+                proposta.Cancelar();
+                break;
+        }
+
+        await _repository.AtualizarAsync(proposta);
 
         await _repository.SalvarAlteracoesAsync();
     }

@@ -13,10 +13,8 @@ public class AppDbContext : DbContext
     public DbSet<Proposta> Propostas { get; set; }
     public DbSet<PropostaCategoria> PropostaCategorias { get; set; }
     public DbSet<PropostaCategoriaItem> PropostaCategoriaItens { get; set; }
-
-    public DbSet<CategoriaOrcamento>
-        CategoriasOrcamento
-    { get; set; }
+    public DbSet<VisitaTecnica> VisitasTecnicas { get; set; }
+    public DbSet<CategoriaOrcamento> CategoriasOrcamento { get; set; }
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)

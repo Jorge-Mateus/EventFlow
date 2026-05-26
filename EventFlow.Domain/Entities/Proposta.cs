@@ -14,7 +14,7 @@ namespace EventFlow.Domain.Entities
         public Guid EventoId { get; private set; }
 
         public Evento Evento { get; private set; }
-
+        public ICollection<VisitaTecnica> VisitasTecnicas { get; private set; } = new List<VisitaTecnica>();
         protected Proposta() { }
 
         public Proposta(Guid eventoId)
@@ -48,6 +48,40 @@ namespace EventFlow.Domain.Entities
         public void Aprovar()
         {
             Status = StatusProposta.Aprovada;
+        }
+        public void SolicitarAjuste()
+        {
+            Status = StatusProposta.EmAjuste;
+        }
+
+        public void AgendarVisitaTecnica()
+        {
+            Status = StatusProposta.VisitaTecnicaAgendada;
+        }
+
+        public void IniciarProjeto3D()
+        {
+            Status = StatusProposta.EmProjeto3D;
+        }
+
+        public void AprovarProjeto()
+        {
+            Status = StatusProposta.ProjetoAprovado;
+        }
+
+        public void IniciarMontagem()
+        {
+            Status = StatusProposta.EmMontagem;
+        }
+
+        public void Finalizar()
+        {
+            Status = StatusProposta.Finalizada;
+        }
+
+        public void Cancelar()
+        {
+            Status = StatusProposta.Cancelada;
         }
     }
 }

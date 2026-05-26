@@ -12,27 +12,28 @@ public class PropostaMap : IEntityTypeConfiguration<Proposta>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Status)
-            .IsRequired();
+        builder.Property(x => x.Status).IsRequired();
 
         builder.Ignore(x => x.ValorTotal);
-
         builder
             .HasMany(x => x.Categorias)
             .WithOne(x => x.Proposta)
             .HasForeignKey(x => x.PropostaId)
             .OnDelete(DeleteBehavior.Cascade);
-
         builder.Metadata
             .FindNavigation(
                 nameof(Proposta.Categorias))
             ?.SetPropertyAccessMode(
                 PropertyAccessMode.Field);
-
         builder
             .HasOne(x => x.Evento)
             .WithMany(x => x.Propostas)
             .HasForeignKey(x => x.EventoId)
             .OnDelete(DeleteBehavior.Restrict);
+        builder
+            .HasMany(x => x.VisitasTecnicas)
+            .WithOne(x => x.Proposta)
+            .HasForeignKey(x => x.PropostaId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EventFlow.Application.DTOs.Proposta;
 using EventFlow.Application.Interfaces;
+using EventFlow.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -88,7 +89,6 @@ namespace EventFlow.Web.Controllers
             }
 
             await _propostaService.AtualizarAsync(dto);
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -96,10 +96,19 @@ namespace EventFlow.Web.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             await _propostaService.ExcluirAsync(id);
-
             return RedirectToAction(nameof(Index));
         }
-
+        [HttpPost]
+        public async Task<IActionResult> AlterarStatus(Guid id, StatusProposta status)
+        {
+            await _propostaService.AlterarStatusAsync(id, status);
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        public IActionResult AgendarVisita(Guid propostaId)
+        {
+            return RedirectToAction("Create", "VisitaTecnica", new { propostaId });
+        }
+        #region Validacao
         private async Task CarregarEventos()
         {
             var eventos = await _eventoService.ObterTodosAsync();
@@ -123,5 +132,7 @@ namespace EventFlow.Web.Controllers
                         Text = x.Nome
                     });
         }
+        #endregion
+
     }
 }
