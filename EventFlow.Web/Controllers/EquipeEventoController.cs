@@ -1,5 +1,6 @@
 ﻿using EventFlow.Application.DTOs.EquipeEvento;
 using EventFlow.Application.Interfaces;
+using EventFlow.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,13 +21,13 @@ namespace EventFlow.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var equipes =
-                await _service.ObterTodosAsync();
+            var eventos =
+                await _eventoService.ObterTodosAsync();
 
-            return View(equipes);
+            return View(eventos);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(Guid eventoId)
         {
             await CarregarCombos();
 
@@ -34,8 +35,7 @@ namespace EventFlow.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CriarEquipeEventoDto dto)
+        public async Task<IActionResult> Create(CriarEquipeEventoDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -48,27 +48,29 @@ namespace EventFlow.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid eventoId)
         {
-            var equipe = await _service.ObterPorIdAsync(id);
-
-            if (equipe is null)
-                return NotFound();
+            var equipe =
+                await _service.ObterPorEventoAsync(eventoId);
 
             await CarregarCombos();
 
-            var dto = new AtualizarEquipeEventoDto
+            var dto = new CriarEquipeEventoDto
             {
-                Id = equipe.Id,
-                ColaboradorId = equipe.ColaboradorId,
-                ValorPagamento = equipe.ValorPagamento
+                EventoId = eventoId,
+                Itens = equipe.Select(x =>
+                    new CriarEquipeEventoItemDto
+                    {
+                        ColaboradorId = x.ColaboradorId,
+                        ValorPagamento = x.ValorPagamento
+                    }).ToList()
             };
 
             return View(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(AtualizarEquipeEventoDto dto)
+        public async Task<IActionResult> Edit( CriarEquipeEventoDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -78,7 +80,7 @@ namespace EventFlow.Web.Controllers
 
             await _service.AtualizarAsync(dto);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction( "Details","Evento", new { id = dto.EventoId });
         }
 
         [HttpPost]

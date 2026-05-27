@@ -1,29 +1,106 @@
-﻿@model EventFlow.Application.DTOs.EquipeEvento.AtualizarEquipeEventoDto
+﻿@model EventFlow.Application.DTOs.EquipeEvento.CriarEquipeEventoDto
+
+@{
+    ViewData["Title"] = "Editar Equipe";
+}
 
 <h1>Editar Equipe</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" asp-controller="EquipeEvento" method="post">
 
-    <input asp-for="Id" type="hidden" />
+    <input asp-for="EventoId" type="hidden" />
 
-    <div class="mb-3">
-        <label>Colaborador</label>
+    <table class="table" id="tabelaEquipe">
+        <thead>
+            <tr>
+                <th>Colaborador</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </thead>
 
-        <select asp-for="ColaboradorId"
-                asp-items="ViewBag.Colaboradores"
-                class="form-select">
-        </select>
-    </div>
+        <tbody>
 
-    <div class="mb-3">
-        <label>Valor</label>
+            @for (int i = 0; i < Model.Itens.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <select asp-for="Itens[i].ColaboradorId"
+                                asp-items="ViewBag.Colaboradores"
+                                class="form-select">
+                        </select>
+                    </td>
 
-        <input asp-for="ValorPagamento"
-               class="form-control" />
-    </div>
+                    <td>
+                        <input asp-for="Itens[i].ValorPagamento"
+                               class="form-control" />
+                    </td>
 
-    <button class="btn btn-success">
-        Atualizar
+                    <td>
+                        <button type="button"
+                                class="btn btn-danger remover">
+                            X
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <button type="button"
+            id="addLinha"
+            class="btn btn-secondary">
+        Adicionar Linha
+    </button>
+
+    <button type="submit"
+            class="btn btn-success">
+        Atualizar Equipe
     </button>
 
 </form>
+
+<script>
+    let index = @Model.Itens.Count;
+
+    document.getElementById("addLinha")
+        .addEventListener("click", function () {
+
+            const linha = `
+            <tr>
+                <td>
+                    <select name="Itens[${index}].ColaboradorId"
+                            class="form-select">
+                        @foreach (var item in ViewBag.Colaboradores)
+                        {
+                                <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </td>
+
+                <td>
+                    <input name="Itens[${index}].ValorPagamento"
+                           class="form-control" />
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">
+                        X
+                    </button>
+                </td>
+            </tr>`;
+
+            document.querySelector("#tabelaEquipe tbody")
+                .insertAdjacentHTML("beforeend", linha);
+
+            index++;
+        });
+
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remover")) {
+            e.target.closest("tr").remove();
+        }
+    });
+</script>

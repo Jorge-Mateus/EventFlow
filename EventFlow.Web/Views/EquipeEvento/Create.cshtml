@@ -4,35 +4,94 @@
 
 <form asp-action="Create" method="post">
 
-    <div class="mb-3">
-        <label>Evento</label>
+    <input asp-for="EventoId" type="hidden" />
 
-        <select asp-for="EventoId"
-                asp-items="ViewBag.Eventos"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+    <table class="table" id="tabelaEquipe">
 
-    <div class="mb-3">
-        <label>Colaborador</label>
+        <thead>
+            <tr>
+                <th>Colaborador</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </thead>
 
-        <select asp-for="ColaboradorId"
-                asp-items="ViewBag.Colaboradores"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="Itens[0].ColaboradorId"
+                            class="form-select"
+                            asp-items="ViewBag.Colaboradores">
+                    </select>
+                </td>
 
-    <div class="mb-3">
-        <label>Valor</label>
+                <td>
+                    <input name="Itens[0].ValorPagamento"
+                           class="form-control" />
+                </td>
 
-        <input asp-for="ValorPagamento"
-               class="form-control" />
-    </div>
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">
+                        X
+                    </button>
+                </td>
+            </tr>
+        </tbody>
 
-    <button class="btn btn-success">
+    </table>
+
+    <button type="button"
+            id="addLinha"
+            class="btn btn-secondary">
+        Adicionar
+    </button>
+
+    <button type="submit"
+            class="btn btn-success">
         Salvar
     </button>
 
 </form>
+
+<script>
+    let index = 1;
+
+    document.getElementById("addLinha")
+        .addEventListener("click", function () {
+
+            const linha = `
+            <tr>
+                <td>
+                    <select name="Itens[${index}].ColaboradorId"
+                            class="form-select">
+                        @foreach (var item in ViewBag.Colaboradores)
+                        {
+                                <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </td>
+
+                <td>
+                    <input name="Itens[${index}].ValorPagamento"
+                           class="form-control" />
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">X</button>
+                </td>
+            </tr>`;
+
+            document.querySelector("#tabelaEquipe tbody")
+                .insertAdjacentHTML("beforeend", linha);
+
+            index++;
+        });
+
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remover")) {
+            e.target.closest("tr").remove();
+        }
+    });
+</script>

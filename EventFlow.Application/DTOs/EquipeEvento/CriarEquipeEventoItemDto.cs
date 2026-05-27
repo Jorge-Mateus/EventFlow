@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.DTOs.EquipeEvento
 {
-    public class CriarEquipeEventoDto
+    public class CriarEquipeEventoItemDto
     {
-        public Guid EventoId { get; set; }
-        public List<CriarEquipeEventoItemDto> Itens { get; set; } = new();
+        public Guid ColaboradorId { get; set; }
+        public decimal ValorPagamento { get; set; }
     }
 }

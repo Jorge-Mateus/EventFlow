@@ -17,7 +17,7 @@ namespace EventFlow.Application.DTOs.Evento
         public DateTime DataEvento { get; set; }
 
         public string LocalEvento { get; set; }
-
+        public bool TemEquipe { get; set; }
         public int QuantidadeConvidados { get; set; }
     }
 }

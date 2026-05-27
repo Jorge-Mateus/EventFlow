@@ -6,3 +6,22 @@
 <p><strong>Data:</strong> @Model.DataEvento.ToShortDateString()</p>
 <p><strong>Local:</strong> @Model.LocalEvento</p>
 <p><strong>Convidados:</strong> @Model.QuantidadeConvidados</p>
+
+@if (Model.TemEquipe)
+{
+    <a asp-controller="EquipeEvento"
+       asp-action="Edit"
+       asp-route-eventoId="@Model.Id"
+       class="btn btn-warning">
+        Editar Equipe
+    </a>
+}
+else
+{
+    <a asp-controller="EquipeEvento"
+       asp-action="Create"
+       asp-route-eventoId="@Model.Id"
+       class="btn btn-primary">
+        Montar Equipe
+    </a>
+}

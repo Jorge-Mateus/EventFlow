@@ -1,4 +1,6 @@
-﻿namespace EventFlow.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EventFlow.Domain.Entities
 {
     public class Evento : BaseEntity
     {
@@ -14,9 +16,9 @@
 
         public int QuantidadeConvidados { get; private set; }
 
-        public ICollection<Proposta> Propostas { get; private set; }
-            = new List<Proposta>();
-
+        public ICollection<Proposta> Propostas { get; private set; } = new List<Proposta>();
+        [NotMapped]
+        public bool TemEquipe { get; private set; }
         protected Evento() { }
 
         public Evento(Guid clienteId, string nome, DateTime dataEvento, string localEvento, int quantidadeConvidados)

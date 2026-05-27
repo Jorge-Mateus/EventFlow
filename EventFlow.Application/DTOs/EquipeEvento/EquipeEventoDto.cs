@@ -13,7 +13,7 @@ namespace EventFlow.Application.DTOs.EquipeEvento
         public Guid EventoId { get; set; }
 
         public Guid ColaboradorId { get; set; }
-
+        public string EventoNome { get; set; }
         public decimal ValorPagamento { get; set; }
     }
 }

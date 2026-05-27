@@ -43,37 +43,49 @@ public class EventoRepository : IEventoRepository
         return Task.CompletedTask;
     }
 
-    public async Task<Evento?> ObterPorIdAsync(
-        Guid id)
+    public async Task<Evento?> ObterPorIdAsync(Guid id)
     {
         var sql = @"
-            SELECT
-                *
-            FROM Eventos
-            WHERE Id = @Id
-        ";
+        SELECT
+            e.*,
+            CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM EquipesEvento ee
+                    WHERE ee.EventoId = e.Id
+                )
+                THEN CAST(1 AS BIT)
+                ELSE CAST(0 AS BIT)
+            END AS TemEquipe
+        FROM Eventos e
+        WHERE e.Id = @Id
+    ";
 
         using var connection = Connection();
 
-        return await connection
-            .QueryFirstOrDefaultAsync<Evento>(
-                sql,
-                new { Id = id });
+        return await connection.QueryFirstOrDefaultAsync<Evento>(sql, new { Id = id });
     }
 
-    public async Task<IEnumerable<Evento>>
-        ObterTodosAsync()
+    public async Task<IEnumerable<Evento>> ObterTodosAsync()
     {
         var sql = @"
-            SELECT
-                *
-            FROM Eventos
-        ";
+        SELECT
+            e.*,
+            CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM EquipesEvento ee
+                    WHERE ee.EventoId = e.Id
+                )
+                THEN CAST(1 AS BIT)
+                ELSE CAST(0 AS BIT)
+            END AS TemEquipe
+        FROM Eventos e
+    ";
 
         using var connection = Connection();
 
-        return await connection
-            .QueryAsync<Evento>(sql);
+        return await connection.QueryAsync<Evento>(sql);
     }
 
     public async Task SalvarAlteracoesAsync()

@@ -14,34 +14,47 @@ namespace EventFlow.Application.Services
     public class EquipeEventoService : IEquipeEventoService
     {
         private readonly IEquipeEventoRepository _repository;
+        private readonly IColaboradorRepository _colaboradorRepository;
 
-        public EquipeEventoService(IEquipeEventoRepository repository)
+        public EquipeEventoService(IEquipeEventoRepository repository, IColaboradorRepository colaboradorRepository)
         {
             _repository = repository;
+            _colaboradorRepository = colaboradorRepository;
         }
 
         public async Task CriarAsync(CriarEquipeEventoDto dto)
         {
-            var equipeEvento = new EquipeEvento(
-                dto.EventoId,
-                dto.ColaboradorId,
-                dto.ValorPagamento);
+            foreach (var item in dto.Itens)
+            {
+                var equipe = new EquipeEvento(
+                    dto.EventoId,
+                    item.ColaboradorId,
+                    item.ValorPagamento);
 
-            await _repository.AdicionarAsync(equipeEvento);
+                await _repository.AdicionarAsync(equipe);
+            }
 
             await _repository.SalvarAlteracoesAsync();
         }
 
-        public async Task AtualizarAsync(AtualizarEquipeEventoDto dto)
+        public async Task AtualizarAsync( CriarEquipeEventoDto dto)
         {
-            var equipe = await _repository.ObterPorIdAsync(dto.Id);
+            var equipeAtual =  await _repository.ObterPorEventoAsync(dto.EventoId);
 
-            if (equipe is null)
-                return;
+            foreach (var item in equipeAtual)
+            {
+                await _repository.RemoverAsync(item);
+            }
 
-            equipe.Atualizar(equipe.ColaboradorId, dto.ValorPagamento);
+            foreach (var item in dto.Itens)
+            {
+                var equipe = new EquipeEvento(
+                    dto.EventoId,
+                    item.ColaboradorId,
+                    item.ValorPagamento);
 
-            await _repository.AtualizarAsync(equipe);
+                await _repository.AdicionarAsync(equipe);
+            }
 
             await _repository.SalvarAlteracoesAsync();
         }
@@ -57,6 +70,7 @@ namespace EventFlow.Application.Services
                 Id = equipe.Id,
                 EventoId = equipe.EventoId,
                 ColaboradorId = equipe.ColaboradorId,
+                EventoNome = equipe.Evento?.Nome,
                 ValorPagamento = equipe.ValorPagamento
             };
         }
@@ -99,5 +113,7 @@ namespace EventFlow.Application.Services
 
             await _repository.SalvarAlteracoesAsync();
         }
+
+
     }
 }

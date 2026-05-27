@@ -10,7 +10,7 @@ namespace EventFlow.Application.Interfaces
     public interface IEquipeEventoService
     {
         Task CriarAsync(CriarEquipeEventoDto dto);
-        Task AtualizarAsync(AtualizarEquipeEventoDto dto);
+        Task AtualizarAsync(CriarEquipeEventoDto dto);
         Task<EquipeEventoDto?> ObterPorIdAsync(Guid id);
         Task<IEnumerable<EquipeEventoDto>> ObterTodosAsync();
         Task<IEnumerable<EquipeEventoDto>> ObterPorEventoAsync(Guid eventoId);
