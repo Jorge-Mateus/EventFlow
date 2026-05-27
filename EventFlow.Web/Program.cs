@@ -17,6 +17,7 @@ builder.Services.AddScoped<IPropostaService, PropostaService>();
 builder.Services.AddScoped<ICategoriaOrcamentoService, CategoriaOrcamentoService>();
 builder.Services.AddScoped<IEventoService, EventoService>();
 builder.Services.AddScoped<IVisitaTecnicaService, VisitaTecnicaService>();
+builder.Services.AddScoped<IProjetoDecoracaoService, ProjetoDecoracaoService>();
 
 
 var app = builder.Build();
