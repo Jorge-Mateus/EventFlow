@@ -1,0 +1,20 @@
+﻿@model EventFlow.Application.DTOs.Funcao.AtualizarFuncaoDto
+
+<h1>Editar Função</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Nome</label>
+
+        <input asp-for="Nome"
+               class="form-control" />
+    </div>
+
+    <button class="btn btn-success">
+        Atualizar
+    </button>
+
+</form>
