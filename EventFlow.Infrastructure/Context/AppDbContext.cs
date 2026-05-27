@@ -15,7 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<PropostaCategoriaItem> PropostaCategoriaItens { get; set; }
     public DbSet<VisitaTecnica> VisitasTecnicas { get; set; }
     public DbSet<CategoriaOrcamento> CategoriasOrcamento { get; set; }
-
+    public DbSet<ProjetoDecoracao> ProjetosDecoracao { get; set; }
+    public DbSet<ProjetoArquivo> ProjetoArquivos { get; set; }
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
     {

@@ -25,6 +25,7 @@ namespace EventFlow.Infrastructure.DependencyInjection
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<ICategoriaOrcamentoRepository, CategoriaOrcamentoRepository>();
             services.AddScoped<IVisitaTecnicaRepository, VisitaTecnicaRepository>();
+            services.AddScoped<IProjetoDecoracaoRepository, ProjetoDecoracaoRepository>();
             return services;
         }
     }
