@@ -23,6 +23,35 @@
             <tr>
                 <td>@item.Nome</td>
                 <td>@item.Observacoes</td>
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info btn-sm">
+                        Detalhes
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <form asp-action="Delete"
+                          method="post"
+                          style="display:inline;">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@item.Id" />
+
+                        <button class="btn btn-danger btn-sm">
+                            Excluir
+                        </button>
+
+                    </form>
+
+                </td>
             </tr>
         }
 

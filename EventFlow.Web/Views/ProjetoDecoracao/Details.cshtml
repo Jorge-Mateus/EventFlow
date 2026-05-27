@@ -1,0 +1,124 @@
+﻿@model EventFlow.Application.DTOs.ProjetoDecoracao.ProjetoDecoracaoDto
+
+@{
+    ViewData["Title"] = "Detalhes do Projeto";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="mb-0">@Model.Nome</h1>
+            <small class="text-muted">
+                Projeto decorativo
+            </small>
+        </div>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            Editar
+        </a>
+
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-header">
+            <strong>Informações do Projeto</strong>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>Evento:</strong><br />
+                    @Model.NomeEvento
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <strong>Data:</strong><br />
+                    @Model.DataEvento.ToString("dd/MM/yyyy")
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <strong>Status:</strong><br />
+                    <span class="badge bg-primary">
+                        @Model.StatusProposta
+                    </span>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div>
+                <strong>Observações:</strong>
+
+                <p class="mt-2">
+                    @(string.IsNullOrWhiteSpace(Model.Observacoes)
+                        ? "Nenhuma observação cadastrada."
+                        : Model.Observacoes)
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3">Arquivos do Projeto</h4>
+
+    @if (Model.Arquivos.Any())
+    {
+        <div class="row">
+
+            @foreach (var arquivo in Model.Arquivos)
+            {
+                <div class="col-md-4 mb-4">
+
+                    <div class="card shadow-sm h-100">
+
+                        @if (arquivo.Tipo.Contains("image"))
+                        {
+                            <img src="@arquivo.Caminho"
+                                 class="card-img-top"
+                                 style="height:250px; object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="text-center p-5 bg-light">
+                                <strong>Arquivo</strong>
+                            </div>
+                        }
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h6 class="card-title">
+                                @arquivo.NomeArquivo
+                            </h6>
+
+                            <a href="@arquivo.Caminho"
+                               target="_blank"
+                               class="btn btn-primary btn-sm mt-auto">
+                                Abrir Arquivo
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary">
+            Nenhum arquivo enviado para este projeto.
+        </div>
+    }
+
+</div>

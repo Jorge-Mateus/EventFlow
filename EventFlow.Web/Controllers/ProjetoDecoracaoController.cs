@@ -1,5 +1,6 @@
 ﻿using EventFlow.Application.DTOs.ProjetoDecoracao;
 using EventFlow.Application.Interfaces;
+using EventFlow.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -89,6 +90,97 @@ namespace EventFlow.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var projeto = await _service.ObterPorIdAsync(id);
+
+            if (projeto is null) return NotFound();
+
+            return View(projeto);
+        }
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var projeto = await _service.ObterPorIdAsync(id);
+
+            if (projeto is null) return NotFound();
+
+            await CarregarPropostas();
+
+            var dto = new AtualizarProjetoDecoracaoDto
+            {
+                Id = projeto.Id,
+                PropostaId = projeto.PropostaId,
+                Nome = projeto.Nome,
+                Observacoes = projeto.Observacoes,
+                Arquivos = projeto.Arquivos
+            };
+
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AtualizarProjetoDecoracaoDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                await CarregarPropostas();
+                return View(dto);
+            }
+
+            await _service.AtualizarAsync(dto);
+
+            return RedirectToAction(nameof(Details), new { id = dto.Id });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadArquivos(Guid projetoId, List<IFormFile> arquivos)
+        {
+            if (arquivos is null || !arquivos.Any())
+                return RedirectToAction(nameof(Details), new { id = projetoId });
+
+            var arquivosProcessados = new List<(string Nome, string Caminho, string Tipo)>();
+
+            var pastaUploads = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "projetos");
+
+            if (!Directory.Exists(pastaUploads))
+                Directory.CreateDirectory(pastaUploads);
+
+            foreach (var arquivo in arquivos)
+            {
+                var nomeFisico = $"{Guid.NewGuid()}_{arquivo.FileName}";
+
+                var caminhoFisico = Path.Combine(pastaUploads, nomeFisico);
+
+                using var stream = new FileStream(caminhoFisico, FileMode.Create);
+
+                await arquivo.CopyToAsync(stream);
+
+                arquivosProcessados.Add((arquivo.FileName, $"/uploads/projetos/{nomeFisico}", arquivo.ContentType));
+            }
+
+            await _service.AdicionarArquivosAsync(
+                projetoId,
+                arquivosProcessados);
+
+            return RedirectToAction(nameof(Details), new { id = projetoId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _service.ExcluirAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExcluirArquivo(Guid arquivoId, Guid projetoId)
+        {
+            await _service.RemoverArquivoAsync(arquivoId);
+
+            return RedirectToAction(nameof(Edit), new { id = projetoId });
+        }
 
         private async Task CarregarPropostas()
         {
@@ -100,6 +192,5 @@ namespace EventFlow.Web.Controllers
                 Text = x.Id.ToString()
             });
         }
-
     }
 }

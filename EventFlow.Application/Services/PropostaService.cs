@@ -198,4 +198,6 @@ public class PropostaService : IPropostaService
 
         await _repository.SalvarAlteracoesAsync();
     }
+
+  
 }

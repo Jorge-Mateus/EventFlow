@@ -20,8 +20,9 @@ namespace EventFlow.Domain.Entities
 
         protected ProjetoArquivo() { }
 
-        public ProjetoArquivo(string nomeArquivo, string caminho, string tipo)
+        public ProjetoArquivo(Guid projetoDecoracaoId, string nomeArquivo, string caminho, string tipo)
         {
+            ProjetoDecoracaoId = projetoDecoracaoId;
             NomeArquivo = nomeArquivo;
             Caminho = caminho;
             Tipo = tipo;

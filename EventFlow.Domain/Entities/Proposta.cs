@@ -83,5 +83,10 @@ namespace EventFlow.Domain.Entities
         {
             Status = StatusProposta.Cancelada;
         }
+        public void DefinirEvento(Evento evento)
+        {
+            Evento = evento;
+        }
+
     }
 }

@@ -33,5 +33,19 @@ namespace EventFlow.Domain.Entities
         {
             _arquivos.Add(arquivo);
         }
+        public void Atualizar(Guid propostaId, string nome, string observacoes)
+        {
+            PropostaId = propostaId;
+            Nome = nome;
+            Observacoes = observacoes;
+        }
+        public void LimparArquivos()
+        {
+            _arquivos.Clear();
+        }
+        public void DefinirProposta(Proposta proposta)
+        {
+            Proposta = proposta;
+        }
     }
 }

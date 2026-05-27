@@ -1,0 +1,120 @@
+﻿@model EventFlow.Application.DTOs.ProjetoDecoracao.AtualizarProjetoDecoracaoDto
+
+<h1>Editar Projeto</h1>
+
+<form asp-action="Edit"
+      method="post">
+
+    <input asp-for="Id"
+           type="hidden" />
+
+    <div class="mb-3">
+        <label>Proposta</label>
+
+        <select asp-for="PropostaId"
+                asp-items="ViewBag.Propostas"
+                class="form-select">
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Nome</label>
+
+        <input asp-for="Nome"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Observações</label>
+
+        <textarea asp-for="Observacoes"
+                  class="form-control">
+        </textarea>
+    </div>
+
+    <button class="btn btn-success">
+        Salvar Alterações
+    </button>
+
+</form>
+
+<hr />
+
+<h3>Arquivos</h3>
+
+@if (Model.Arquivos.Any())
+{
+    <div class="row">
+
+        @foreach (var arquivo in Model.Arquivos)
+        {
+            <div class="col-md-3 mb-4">
+
+                <div class="card">
+
+                    @if (arquivo.Tipo.Contains("image"))
+                    {
+                        <img src="@arquivo.Caminho"
+                             class="card-img-top"
+                             style="height:200px;object-fit:cover;" />
+                    }
+
+                    <div class="card-body">
+
+                        <small>
+                            @arquivo.NomeArquivo
+                        </small>
+
+                        <form asp-action="ExcluirArquivo"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="arquivoId"
+                                   value="@arquivo.Id" />
+
+                            <input type="hidden"
+                                   name="projetoId"
+                                   value="@Model.Id" />
+
+                            <button class="btn btn-danger btn-sm mt-2">
+                                Excluir
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}
+
+<hr />
+
+<h3>Adicionar Arquivos</h3>
+
+<form asp-action="UploadArquivos"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input type="hidden"
+           name="projetoId"
+           value="@Model.Id" />
+
+    <div class="mb-3">
+
+        <input type="file"
+               name="arquivos"
+               multiple
+               class="form-control" />
+
+    </div>
+
+    <button class="btn btn-primary">
+        Enviar Arquivos
+    </button>
+
+</form>

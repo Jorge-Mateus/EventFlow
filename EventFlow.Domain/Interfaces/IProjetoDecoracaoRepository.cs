@@ -15,5 +15,7 @@ namespace EventFlow.Domain.Interfaces
         Task SalvarAlteracoesAsync();
         Task AtualizarAsync(ProjetoDecoracao projeto);
         Task RemoverAsync(ProjetoDecoracao projeto);
+        Task RemoverArquivoAsync(Guid projetoId);
+        Task AdicionarArquivoAsync(ProjetoArquivo arquivo);
     }
 }

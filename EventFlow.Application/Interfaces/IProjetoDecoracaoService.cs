@@ -13,5 +13,11 @@ namespace EventFlow.Application.Interfaces
         Task<IEnumerable<ProjetoDecoracaoDto>> ObterTodosAsync();
         Task<ProjetoDecoracaoDto?> ObterPorIdAsync(Guid id);
         Task UploadArquivoAsync(UploadProjetoArquivoDto dto);
+        Task<ProjetoDecoracaoDto?> ObterDetalheAsync(Guid id);
+        Task AtualizarAsync(AtualizarProjetoDecoracaoDto dto);
+        Task ExcluirAsync(Guid id);
+        Task AdicionarArquivosAsync(Guid projetoId, List<(string Nome, string Caminho, string Tipo)> arquivos);
+        Task AtualizarComArquivosAsync(AtualizarProjetoDecoracaoDto dto, List<(string Nome, string Caminho, string Tipo)> arquivos);
+        Task RemoverArquivoAsync(Guid arquivoId);
     }
 }
