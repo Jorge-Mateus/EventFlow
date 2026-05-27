@@ -18,4 +18,8 @@
     <ProjectReference Include="..\EventFlow.Infrastructure\EventFlow.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\projetos\" />
+  </ItemGroup>
+
 </Project>

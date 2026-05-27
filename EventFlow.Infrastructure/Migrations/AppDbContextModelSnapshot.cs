@@ -130,6 +130,39 @@ namespace EventFlow.Infrastructure.Migrations
                     b.ToTable("Colaboradores", (string)null);
                 });
 
+            modelBuilder.Entity("EventFlow.Domain.Entities.EquipeEvento", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ColaboradorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EventoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ValorPagamento")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColaboradorId");
+
+                    b.HasIndex("EventoId");
+
+                    b.ToTable("EquipesEvento", (string)null);
+                });
+
             modelBuilder.Entity("EventFlow.Domain.Entities.Evento", b =>
                 {
                     b.Property<Guid>("Id")
@@ -449,6 +482,25 @@ namespace EventFlow.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Funcao");
+                });
+
+            modelBuilder.Entity("EventFlow.Domain.Entities.EquipeEvento", b =>
+                {
+                    b.HasOne("EventFlow.Domain.Entities.Colaborador", "Colaborador")
+                        .WithMany()
+                        .HasForeignKey("ColaboradorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EventFlow.Domain.Entities.Evento", "Evento")
+                        .WithMany()
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Colaborador");
+
+                    b.Navigation("Evento");
                 });
 
             modelBuilder.Entity("EventFlow.Domain.Entities.Evento", b =>

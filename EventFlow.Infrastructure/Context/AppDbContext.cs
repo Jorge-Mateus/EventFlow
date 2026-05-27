@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<ProjetoArquivo> ProjetoArquivos { get; set; }
     public DbSet<Colaborador> Colaboradores { get; set; }
     public DbSet<Funcao> Funcoes { get; set; }
+    public DbSet<EquipeEvento> EquipesEvento { get; set; }
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
     {

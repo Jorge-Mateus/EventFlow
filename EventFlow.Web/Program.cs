@@ -20,10 +20,9 @@ builder.Services.AddScoped<IVisitaTecnicaService, VisitaTecnicaService>();
 builder.Services.AddScoped<IProjetoDecoracaoService, ProjetoDecoracaoService>();
 builder.Services.AddScoped<IFuncaoService, FuncaoService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
-
+builder.Services.AddScoped<IEquipeEventoService, EquipeEventoService>();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,38 @@
+﻿@model EventFlow.Application.DTOs.EquipeEvento.CriarEquipeEventoDto
+
+<h1>Montar Equipe</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label>Evento</label>
+
+        <select asp-for="EventoId"
+                asp-items="ViewBag.Eventos"
+                class="form-select">
+            <option value="">Selecione</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Colaborador</label>
+
+        <select asp-for="ColaboradorId"
+                asp-items="ViewBag.Colaboradores"
+                class="form-select">
+            <option value="">Selecione</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Valor</label>
+
+        <input asp-for="ValorPagamento"
+               class="form-control" />
+    </div>
+
+    <button class="btn btn-success">
+        Salvar
+    </button>
+
+</form>
