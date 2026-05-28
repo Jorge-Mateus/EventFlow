@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventFlow.Application.DTOs.MovimentacaoFinanceira;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +21,11 @@ namespace EventFlow.Application.DTOs.Evento
         public bool TemEquipe { get; set; }
         public bool TemFornecedor { get; set; }
         public int QuantidadeConvidados { get; set; }
+        public decimal TotalEntradas { get; set; }
+
+        public decimal TotalSaidas { get; set; }
+
+        public decimal LucroLiquido { get; set; }
+        public List<MovimentacaoFinanceiraDto> Movimentacoes { get; set; } = new();
     }
 }

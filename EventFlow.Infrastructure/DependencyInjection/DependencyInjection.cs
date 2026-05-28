@@ -20,7 +20,7 @@ namespace EventFlow.Infrastructure.DependencyInjection
                     configuration.GetConnectionString(
                         "DefaultConnection"));
             });
-            services.AddScoped<IPropostaRepository,PropostaRepository>();
+            services.AddScoped<IPropostaRepository, PropostaRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<ICategoriaOrcamentoRepository, CategoriaOrcamentoRepository>();
@@ -31,6 +31,7 @@ namespace EventFlow.Infrastructure.DependencyInjection
             services.AddScoped<IEquipeEventoRepository, EquipeEventoRepository>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEventoFornecedorRepository, EventoFornecedorRepository>();
+            services.AddScoped<IMovimentacaoFinanceiraRepository, MovimentacaoFinanceiraRepository>();
             return services;
         }
     }

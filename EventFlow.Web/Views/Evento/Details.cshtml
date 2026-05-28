@@ -1,46 +1,122 @@
 ﻿@model EventFlow.Application.DTOs.Evento.EventoDetalheDto
 
-<h1>Evento</h1>
+<h1>@Model.Nome</h1>
 
-<p><strong>Nome:</strong> @Model.Nome</p>
-<p><strong>Data:</strong> @Model.DataEvento.ToShortDateString()</p>
-<p><strong>Local:</strong> @Model.LocalEvento</p>
-<p><strong>Convidados:</strong> @Model.QuantidadeConvidados</p>
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Data:</strong> @Model.DataEvento.ToShortDateString()</p>
+        <p><strong>Local:</strong> @Model.LocalEvento</p>
+        <p><strong>Convidados:</strong> @Model.QuantidadeConvidados</p>
+    </div>
+</div>
 
-@if (Model.TemEquipe)
-{
-    <a asp-controller="EquipeEvento"
-       asp-action="Edit"
-       asp-route-eventoId="@Model.Id"
-       class="btn btn-warning">
-        Editar Equipe
-    </a>
-}
-else
-{
-    <a asp-controller="EquipeEvento"
-       asp-action="Create"
-       asp-route-eventoId="@Model.Id"
-       class="btn btn-primary">
-        Montar Equipe
-    </a>
-}
+<h3>Resumo Financeiro</h3>
 
-@if (Model.TemFornecedor)
-{
-    <a asp-controller="EventoFornecedor"
-       asp-action="Edit"
-       asp-route-eventoId="@Model.Id"
-       class="btn btn-warning">
-        Editar Fornecedores
-    </a>
-}
-else
-{
-    <a asp-controller="EventoFornecedor"
-       asp-action="Create"
-       asp-route-eventoId="@Model.Id"
-       class="btn btn-primary">
-        Montar Fornecedores
-    </a>
-}
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <strong>Entradas</strong>
+            <h4>@Model.TotalEntradas.ToString("C")</h4>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <strong>Saídas</strong>
+            <h4>@Model.TotalSaidas.ToString("C")</h4>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center p-3">
+            <strong>Lucro Líquido</strong>
+            <h4>@Model.LucroLiquido.ToString("C")</h4>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<h3>Operação do Evento</h3>
+
+<div class="mb-4">
+
+    @if (Model.TemEquipe)
+    {
+        <a asp-controller="EquipeEvento"
+           asp-action="Edit"
+           asp-route-eventoId="@Model.Id"
+           class="btn btn-warning">
+            Editar Equipe
+        </a>
+    }
+    else
+    {
+        <a asp-controller="EquipeEvento"
+           asp-action="Create"
+           asp-route-eventoId="@Model.Id"
+           class="btn btn-primary">
+            Montar Equipe
+        </a>
+    }
+
+    @if (Model.TemFornecedor)
+    {
+        <a asp-controller="EventoFornecedor"
+           asp-action="Edit"
+           asp-route-eventoId="@Model.Id"
+           class="btn btn-warning ms-2">
+            Editar Fornecedores
+        </a>
+    }
+    else
+    {
+        <a asp-controller="EventoFornecedor"
+           asp-action="Create"
+           asp-route-eventoId="@Model.Id"
+           class="btn btn-primary ms-2">
+            Montar Fornecedores
+        </a>
+    }
+
+</div>
+
+<hr />
+
+<h3>Financeiro</h3>
+
+<a asp-controller="MovimentacaoFinanceira"
+   asp-action="Create"
+   asp-route-eventoId="@Model.Id"
+   class="btn btn-success mb-3">
+    Nova Movimentação
+</a>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Movimentacoes)
+        {
+            <tr>
+                <td>@item.Descricao</td>
+                <td>@item.Tipo</td>
+                <td>@item.Valor.ToString("C")</td>
+                <td>@item.DataMovimentacao.ToShortDateString()</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

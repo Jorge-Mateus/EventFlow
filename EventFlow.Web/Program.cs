@@ -23,6 +23,7 @@ builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IEquipeEventoService, EquipeEventoService>();
 builder.Services.AddScoped<IFornecedorService, FornecedorService>();
 builder.Services.AddScoped<IEventoFornecedorService, EventoFornecedorService>();
+builder.Services.AddScoped<IMovimentacaoFinanceiraService, MovimentacaoFinanceiraService>();
 
 var app = builder.Build();
 

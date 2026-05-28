@@ -14,10 +14,12 @@ namespace EventFlow.Application.Services
     public class EventoService : IEventoService
     {
         private readonly IEventoRepository _repository;
+        private readonly IMovimentacaoFinanceiraService _financeiroService;
 
-        public EventoService(IEventoRepository repository)
+        public EventoService(IEventoRepository repository, IMovimentacaoFinanceiraService financeiroService)
         {
             _repository = repository;
+            _financeiroService = financeiroService;
         }
 
         public async Task CriarAsync(CriarEventoDto dto)
@@ -63,11 +65,19 @@ namespace EventFlow.Application.Services
             };
         }
         public async Task<EventoDetalheDto?> ObterDetalheAsync(Guid id)
-
         {
             var evento = await _repository.ObterPorIdAsync(id);
 
-            if (evento is null) return null;
+            if (evento is null)
+                return null;
+
+            var resumo =
+                await _financeiroService
+                    .ObterResumoAsync(evento.Id);
+
+            var movimentacoes =
+                await _financeiroService
+                    .ObterPorEventoAsync(evento.Id);
 
             return new EventoDetalheDto
             {
@@ -76,9 +86,13 @@ namespace EventFlow.Application.Services
                 Nome = evento.Nome,
                 DataEvento = evento.DataEvento,
                 LocalEvento = evento.LocalEvento,
+                QuantidadeConvidados = evento.QuantidadeConvidados,
                 TemEquipe = evento.TemEquipe,
                 TemFornecedor = evento.TemFornecedor,
-                QuantidadeConvidados = evento.QuantidadeConvidados
+                TotalEntradas = resumo.TotalEntradas,
+                TotalSaidas = resumo.TotalSaidas,
+                LucroLiquido = resumo.LucroLiquido,
+                Movimentacoes = movimentacoes.ToList()
             };
         }
         public async Task AtualizarAsync(AtualizarEventoDto dto)

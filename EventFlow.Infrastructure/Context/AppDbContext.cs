@@ -1,5 +1,6 @@
 ﻿using EventFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace EventFlow.Infrastructure.Context;
 
@@ -22,7 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<EquipeEvento> EquipesEvento { get; set; }
     public DbSet<Fornecedor> Fornecedores { get; set; }
     public DbSet<EventoFornecedor> EventosFornecedores { get; set; }
-
+    public DbSet<MovimentacaoFinanceira> MovimentacoesFinanceiras { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(

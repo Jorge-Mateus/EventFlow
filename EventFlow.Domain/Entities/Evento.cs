@@ -18,7 +18,8 @@ namespace EventFlow.Domain.Entities
 
         public ICollection<Proposta> Propostas { get; private set; } = new List<Proposta>();
         public ICollection<EventoFornecedor> Fornecedores { get; private set; } = new List<EventoFornecedor>();
-        
+        public ICollection<MovimentacaoFinanceira> Movimentacoes { get; private set; } = new List<MovimentacaoFinanceira>();
+
         [NotMapped]
         public bool TemEquipe { get; private set; }
 
