@@ -1,0 +1,120 @@
+﻿@model EventFlow.Application.DTOs.Fornecedor.CriarEventoFornecedorDto
+
+<h1>Editar Fornecedores</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input asp-for="EventoId" type="hidden" />
+
+    <table class="table" id="tabela">
+
+        <thead>
+            <tr>
+                <th>Fornecedor</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (int i = 0; i < Model.Itens.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <select name="Itens[@i].FornecedorId"
+                                class="form-select">
+
+                            @foreach (var item in ViewBag.Fornecedores)
+                            {
+                                if (item.Value == Model.Itens[i].FornecedorId.ToString())
+                                {
+                                    <option value="@item.Value" selected>
+                                        @item.Text
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Value">
+                                        @item.Text
+                                    </option>
+                                }
+                            }
+
+                        </select>
+                    </td>
+
+                    <td>
+                        <input name="Itens[@i].ValorContratado"
+                               value="@Model.Itens[i].ValorContratado"
+                               class="form-control" />
+                    </td>
+
+                    <td>
+                        <button type="button"
+                                class="btn btn-danger remover">
+                            X
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <button type="button"
+            id="addLinha"
+            class="btn btn-secondary">
+        Adicionar Linha
+    </button>
+
+    <button class="btn btn-success">
+        Atualizar
+    </button>
+
+</form>
+
+<script>
+    let index = @Model.Itens.Count;
+
+    document.getElementById("addLinha")
+        .addEventListener("click", function () {
+
+            const linha = `
+            <tr>
+                <td>
+                    <select name="Itens[${index}].FornecedorId"
+                            class="form-select">
+                        @foreach (var item in ViewBag.Fornecedores)
+                        {
+                                <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </td>
+
+                <td>
+                    <input name="Itens[${index}].ValorContratado"
+                           class="form-control" />
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">
+                        X
+                    </button>
+                </td>
+            </tr>`;
+
+            document.querySelector("#tabela tbody")
+                .insertAdjacentHTML("beforeend", linha);
+
+            index++;
+        });
+
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remover")) {
+            e.target.closest("tr").remove();
+        }
+    });
+</script>

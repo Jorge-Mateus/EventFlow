@@ -17,10 +17,15 @@ namespace EventFlow.Domain.Entities
         public int QuantidadeConvidados { get; private set; }
 
         public ICollection<Proposta> Propostas { get; private set; } = new List<Proposta>();
+        public ICollection<EventoFornecedor> Fornecedores { get; private set; } = new List<EventoFornecedor>();
+        
         [NotMapped]
         public bool TemEquipe { get; private set; }
-        protected Evento() { }
 
+        [NotMapped]
+        public bool TemFornecedor { get; private set; }
+
+        protected Evento() { }
         public Evento(Guid clienteId, string nome, DateTime dataEvento, string localEvento, int quantidadeConvidados)
         {
             ClienteId = clienteId;

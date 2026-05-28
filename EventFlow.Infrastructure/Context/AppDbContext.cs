@@ -20,8 +20,10 @@ public class AppDbContext : DbContext
     public DbSet<Colaborador> Colaboradores { get; set; }
     public DbSet<Funcao> Funcoes { get; set; }
     public DbSet<EquipeEvento> EquipesEvento { get; set; }
-    protected override void OnModelCreating(
-        ModelBuilder modelBuilder)
+    public DbSet<Fornecedor> Fornecedores { get; set; }
+    public DbSet<EventoFornecedor> EventosFornecedores { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(AppDbContext).Assembly);

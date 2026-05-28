@@ -18,6 +18,7 @@ namespace EventFlow.Application.DTOs.Evento
 
         public string LocalEvento { get; set; }
         public bool TemEquipe { get; set; }
+        public bool TemFornecedor { get; set; }
         public int QuantidadeConvidados { get; set; }
     }
 }

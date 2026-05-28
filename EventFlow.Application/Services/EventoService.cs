@@ -41,6 +41,7 @@ namespace EventFlow.Application.Services
                 DataEvento = x.DataEvento,
                 LocalEvento = x.LocalEvento,
                 TemEquipe = x.TemEquipe,
+                TemFornecedor = x.TemFornecedor,
                 QuantidadeConvidados = x.QuantidadeConvidados
             });
         }
@@ -76,6 +77,7 @@ namespace EventFlow.Application.Services
                 DataEvento = evento.DataEvento,
                 LocalEvento = evento.LocalEvento,
                 TemEquipe = evento.TemEquipe,
+                TemFornecedor = evento.TemFornecedor,
                 QuantidadeConvidados = evento.QuantidadeConvidados
             };
         }

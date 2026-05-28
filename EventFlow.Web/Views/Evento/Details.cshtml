@@ -25,3 +25,22 @@ else
         Montar Equipe
     </a>
 }
+
+@if (Model.TemFornecedor)
+{
+    <a asp-controller="EventoFornecedor"
+       asp-action="Edit"
+       asp-route-eventoId="@Model.Id"
+       class="btn btn-warning">
+        Editar Fornecedores
+    </a>
+}
+else
+{
+    <a asp-controller="EventoFornecedor"
+       asp-action="Create"
+       asp-route-eventoId="@Model.Id"
+       class="btn btn-primary">
+        Montar Fornecedores
+    </a>
+}

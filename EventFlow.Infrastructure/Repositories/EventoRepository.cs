@@ -45,21 +45,34 @@ public class EventoRepository : IEventoRepository
 
     public async Task<Evento?> ObterPorIdAsync(Guid id)
     {
-        var sql = @"
-        SELECT
-            e.*,
-            CASE
-                WHEN EXISTS (
-                    SELECT 1
-                    FROM EquipesEvento ee
-                    WHERE ee.EventoId = e.Id
-                )
-                THEN CAST(1 AS BIT)
-                ELSE CAST(0 AS BIT)
-            END AS TemEquipe
-        FROM Eventos e
-        WHERE e.Id = @Id
-    ";
+        var sql =
+          @"
+            SELECT
+                e.*,
+
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1
+                        FROM EquipesEvento ee
+                        WHERE ee.EventoId = e.Id
+                    )
+                    THEN CAST(1 AS BIT)
+                    ELSE CAST(0 AS BIT)
+                END AS TemEquipe,
+
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1
+                        FROM EventosFornecedores ef
+                        WHERE ef.EventoId = e.Id
+                    )
+                    THEN CAST(1 AS BIT)
+                    ELSE CAST(0 AS BIT)
+                END AS TemFornecedor
+
+            FROM Eventos e
+            WHERE e.Id = @Id
+          ";
 
         using var connection = Connection();
 
@@ -68,20 +81,33 @@ public class EventoRepository : IEventoRepository
 
     public async Task<IEnumerable<Evento>> ObterTodosAsync()
     {
-        var sql = @"
-        SELECT
-            e.*,
-            CASE
-                WHEN EXISTS (
-                    SELECT 1
-                    FROM EquipesEvento ee
-                    WHERE ee.EventoId = e.Id
-                )
-                THEN CAST(1 AS BIT)
-                ELSE CAST(0 AS BIT)
-            END AS TemEquipe
-        FROM Eventos e
-    ";
+        var sql = 
+            @"
+                SELECT
+                    e.*,
+
+                    CASE
+                        WHEN EXISTS (
+                            SELECT 1
+                            FROM EquipesEvento ee
+                            WHERE ee.EventoId = e.Id
+                        )
+                        THEN CAST(1 AS BIT)
+                        ELSE CAST(0 AS BIT)
+                    END AS TemEquipe,
+
+                    CASE
+                        WHEN EXISTS (
+                            SELECT 1
+                            FROM EventosFornecedores ef
+                            WHERE ef.EventoId = e.Id
+                        )
+                        THEN CAST(1 AS BIT)
+                        ELSE CAST(0 AS BIT)
+                    END AS TemFornecedor
+
+                FROM Eventos e
+            ";
 
         using var connection = Connection();
 

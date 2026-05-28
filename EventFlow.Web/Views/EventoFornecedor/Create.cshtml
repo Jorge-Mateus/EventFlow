@@ -1,0 +1,98 @@
+﻿@model EventFlow.Application.DTOs.Fornecedor.CriarEventoFornecedorDto
+
+<h1>Montar Fornecedores</h1>
+
+<form asp-action="Create" method="post">
+
+    <input asp-for="EventoId" type="hidden" />
+
+    <table class="table" id="tabela">
+
+        <thead>
+            <tr>
+                <th>Fornecedor</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <select name="Itens[0].FornecedorId"
+                            class="form-select"
+                            asp-items="ViewBag.Fornecedores">
+                    </select>
+                </td>
+
+                <td>
+                    <input name="Itens[0].ValorContratado"
+                           class="form-control" />
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">
+                        X
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <button type="button"
+            id="addLinha"
+            class="btn btn-secondary">
+        Adicionar Linha
+    </button>
+
+    <button class="btn btn-success">
+        Salvar
+    </button>
+
+</form>
+
+<script>
+    let index = 1;
+
+    document.getElementById("addLinha")
+        .addEventListener("click", function () {
+
+            const linha = `
+            <tr>
+                <td>
+                    <select name="Itens[${index}].FornecedorId"
+                            class="form-select">
+                        @foreach (var item in ViewBag.Fornecedores)
+                        {
+                                <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </td>
+
+                <td>
+                    <input name="Itens[${index}].ValorContratado"
+                           class="form-control" />
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-danger remover">
+                        X
+                    </button>
+                </td>
+            </tr>`;
+
+            document.querySelector("#tabela tbody")
+                .insertAdjacentHTML("beforeend", linha);
+
+            index++;
+        });
+
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remover")) {
+            e.target.closest("tr").remove();
+        }
+    });
+</script>
