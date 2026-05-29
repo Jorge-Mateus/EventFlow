@@ -24,6 +24,7 @@ public class AppDbContext : DbContext
     public DbSet<Fornecedor> Fornecedores { get; set; }
     public DbSet<EventoFornecedor> EventosFornecedores { get; set; }
     public DbSet<MovimentacaoFinanceira> MovimentacoesFinanceiras { get; set; }
+    public DbSet<Contrato> Contratos { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(

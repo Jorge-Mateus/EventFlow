@@ -24,6 +24,9 @@ builder.Services.AddScoped<IEquipeEventoService, EquipeEventoService>();
 builder.Services.AddScoped<IFornecedorService, FornecedorService>();
 builder.Services.AddScoped<IEventoFornecedorService, EventoFornecedorService>();
 builder.Services.AddScoped<IMovimentacaoFinanceiraService, MovimentacaoFinanceiraService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<ICalendarioService, CalendarioService>();
+builder.Services.AddScoped<IContratoService, ContratoService>();
 
 var app = builder.Build();
 
@@ -45,7 +48,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern:
-    "{controller=Home}/{action=Index}/{id?}");
+   pattern: "{controller=Dashboard}/{action=Index}/{id?}");
 
 app.Run();

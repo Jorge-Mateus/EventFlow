@@ -15,11 +15,13 @@ namespace EventFlow.Application.Services
     {
         private readonly IEventoRepository _repository;
         private readonly IMovimentacaoFinanceiraService _financeiroService;
+        private readonly IContratoService _contratoService;
 
-        public EventoService(IEventoRepository repository, IMovimentacaoFinanceiraService financeiroService)
+        public EventoService(IEventoRepository repository, IMovimentacaoFinanceiraService financeiroService, IContratoService contratoService)
         {
             _repository = repository;
             _financeiroService = financeiroService;
+            _contratoService = contratoService;
         }
 
         public async Task CriarAsync(CriarEventoDto dto)
@@ -70,7 +72,7 @@ namespace EventFlow.Application.Services
 
             if (evento is null)
                 return null;
-
+            var contratos = await _contratoService.ObterPorEventoAsync(evento.Id);
             var resumo =
                 await _financeiroService
                     .ObterResumoAsync(evento.Id);
@@ -92,6 +94,7 @@ namespace EventFlow.Application.Services
                 TotalEntradas = resumo.TotalEntradas,
                 TotalSaidas = resumo.TotalSaidas,
                 LucroLiquido = resumo.LucroLiquido,
+                Contratos = contratos.ToList(),
                 Movimentacoes = movimentacoes.ToList()
             };
         }

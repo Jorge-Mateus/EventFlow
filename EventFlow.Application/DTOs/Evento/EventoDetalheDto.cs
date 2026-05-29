@@ -1,4 +1,5 @@
-﻿using EventFlow.Application.DTOs.MovimentacaoFinanceira;
+﻿using EventFlow.Application.DTOs.Contrato;
+using EventFlow.Application.DTOs.MovimentacaoFinanceira;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,6 @@ namespace EventFlow.Application.DTOs.Evento
 
         public decimal LucroLiquido { get; set; }
         public List<MovimentacaoFinanceiraDto> Movimentacoes { get; set; } = new();
+        public List<ContratoDto> Contratos { get; set; } = new();
     }
 }

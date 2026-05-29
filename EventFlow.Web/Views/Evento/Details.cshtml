@@ -120,3 +120,94 @@
     </tbody>
 
 </table>
+<hr />
+
+<h3>Contratos</h3>
+
+<a asp-controller="Contrato"
+   asp-action="Create"
+   asp-route-eventoId="@Model.Id"
+   class="btn btn-primary mb-3">
+    Novo Contrato
+</a>
+
+@if (Model.Contratos.Any())
+{
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var contrato in Model.Contratos)
+            {
+                <tr>
+                    <td>@contrato.Titulo</td>
+
+                    <td>
+                        @(contrato.Assinado
+                            ? "Assinado"
+                            : "Pendente")
+                    </td>
+
+                    <td>
+
+                        <a href="@contrato.CaminhoArquivo"
+                           target="_blank"
+                           class="btn btn-info btn-sm">
+                            Abrir
+                        </a>
+
+                        @if (!contrato.Assinado)
+                        {
+                            <form asp-controller="Contrato"
+                                  asp-action="Assinar"
+                                  method="post"
+                                  style="display:inline;">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@contrato.Id" />
+
+                                <input type="hidden"
+                                       name="eventoId"
+                                       value="@Model.Id" />
+
+                                <button class="btn btn-success btn-sm">
+                                    Assinar
+                                </button>
+                            </form>
+                        }
+
+                        <form asp-controller="Contrato"
+                              asp-action="Delete"
+                              method="post"
+                              style="display:inline;">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@contrato.Id" />
+
+                            <input type="hidden"
+                                   name="eventoId"
+                                   value="@Model.Id" />
+
+                            <button class="btn btn-danger btn-sm">
+                                Excluir
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}

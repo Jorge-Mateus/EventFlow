@@ -32,6 +32,8 @@ namespace EventFlow.Infrastructure.DependencyInjection
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEventoFornecedorRepository, EventoFornecedorRepository>();
             services.AddScoped<IMovimentacaoFinanceiraRepository, MovimentacaoFinanceiraRepository>();
+            services.AddScoped<IContratoRepository, ContratoRepository>();
+
             return services;
         }
     }

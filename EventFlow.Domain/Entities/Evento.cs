@@ -19,6 +19,9 @@ namespace EventFlow.Domain.Entities
         public ICollection<Proposta> Propostas { get; private set; } = new List<Proposta>();
         public ICollection<EventoFornecedor> Fornecedores { get; private set; } = new List<EventoFornecedor>();
         public ICollection<MovimentacaoFinanceira> Movimentacoes { get; private set; } = new List<MovimentacaoFinanceira>();
+        private readonly List<Contrato> _contratos = new();
+        public IReadOnlyCollection<Contrato> Contratos => _contratos.AsReadOnly();
+        public bool TemContrato => _contratos.Any();
 
         [NotMapped]
         public bool TemEquipe { get; private set; }
@@ -42,6 +45,10 @@ namespace EventFlow.Domain.Entities
             DataEvento = dataEvento;
             LocalEvento = localEvento;
             QuantidadeConvidados = quantidadeConvidados;
+        }
+        public void AdicionarContrato(Contrato contrato)
+        {
+            _contratos.Add(contrato);
         }
     }
 }

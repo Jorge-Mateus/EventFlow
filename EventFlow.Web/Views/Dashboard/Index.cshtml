@@ -1,0 +1,239 @@
+﻿@model EventFlow.Application.DTOs.Dashboard.DashboardDto
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="mb-4">Dashboard EventFlow</h1>
+
+<!-- INDICADORES GERAIS -->
+<h3>Indicadores</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card p-3 text-center shadow-sm">
+            <h6>Total de Eventos</h6>
+            <h2>@Model.TotalEventos</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 text-center shadow-sm">
+            <h6>Eventos Futuros</h6>
+            <h2>@Model.EventosFuturos</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 text-center shadow-sm">
+            <h6>Eventos do Mês</h6>
+            <h2>@Model.EventosMes</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<!-- FINANCEIRO -->
+<h3>Resumo Financeiro</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white p-3 text-center shadow-sm">
+            <h6>Receitas</h6>
+            <h2>@Model.ReceitaTotal.ToString("C")</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-danger text-white p-3 text-center shadow-sm">
+            <h6>Despesas</h6>
+            <h2>@Model.DespesaTotal.ToString("C")</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-3 text-center shadow-sm">
+            <h6>Lucro Líquido</h6>
+            <h2>@Model.LucroTotal.ToString("C")</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<!-- ALERTAS -->
+<h3>Alertas Operacionais</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+        <div class="card border-warning p-3 text-center shadow-sm">
+            <h6>Eventos sem Equipe</h6>
+            <h2>@Model.EventosSemEquipe</h2>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-danger p-3 text-center shadow-sm">
+            <h6>Eventos sem Fornecedor</h6>
+            <h2>@Model.EventosSemFornecedor</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<!-- PRÓXIMOS EVENTOS -->
+<h3>Próximos Eventos</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Data</th>
+                    <th>Local</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.ProximosEventos)
+                {
+                    <tr>
+                        <td>@item.Nome</td>
+                        <td>@item.DataEvento.ToShortDateString()</td>
+                        <td>@item.LocalEvento</td>
+
+                        <td>
+                            @if (!item.TemEquipe)
+                            {
+                                <span class="badge bg-warning">
+                                    Sem Equipe
+                                </span>
+                            }
+                            else if (!item.TemFornecedor)
+                            {
+                                <span class="badge bg-danger">
+                                    Sem Fornecedor
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">
+                                    Completo
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-controller="Evento"
+                               asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-primary">
+                                Abrir
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<hr />
+
+<!-- FINANCEIRO MENSAL -->
+<h3>Financeiro Mensal</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <thead>
+                <tr>
+                    <th>Mês</th>
+                    <th>Entradas</th>
+                    <th>Saídas</th>
+                    <th>Lucro</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.FinanceiroMensal)
+                {
+                    <tr>
+                        <td>@item.Mes</td>
+                        <td>@item.Entradas.ToString("C")</td>
+                        <td>@item.Saidas.ToString("C")</td>
+                        <td>@item.Lucro.ToString("C")</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<hr />
+
+<!-- GRÁFICO -->
+<h3>Gráfico Financeiro</h3>
+
+<div class="card shadow-sm p-4">
+    <canvas id="graficoFinanceiro" height="120"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = [
+    @Html.Raw(string.Join(",", Model.FinanceiroMensal.Select(x => $"'{x.Mes}'")))
+    ];
+
+    const entradas = [
+    @Html.Raw(string.Join(",", Model.FinanceiroMensal.Select(x => x.Entradas)))
+    ];
+
+    const saidas = [
+    @Html.Raw(string.Join(",", Model.FinanceiroMensal.Select(x => x.Saidas)))
+    ];
+
+    new Chart(document.getElementById('graficoFinanceiro'), {
+    type: 'bar',
+    data: {
+    labels: labels,
+    datasets: [
+    {
+    label: 'Entradas',
+    data: entradas
+    },
+    {
+    label: 'Saídas',
+    data: saidas
+    }
+    ]
+    },
+    options: {
+    responsive: true
+    }
+    });
+</script>

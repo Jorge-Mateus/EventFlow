@@ -1,0 +1,35 @@
+﻿@model EventFlow.Application.DTOs.Contrato.CriarContratoDto
+
+<h1>Novo Contrato</h1>
+
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input asp-for="EventoId" type="hidden" />
+
+    <div class="mb-3">
+        <label>Título</label>
+        <input asp-for="Titulo"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descrição</label>
+        <textarea asp-for="Descricao"
+                  class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Arquivo PDF</label>
+        <input type="file"
+               name="arquivo"
+               accept=".pdf"
+               class="form-control" />
+    </div>
+
+    <button class="btn btn-success">
+        Salvar Contrato
+    </button>
+
+</form>

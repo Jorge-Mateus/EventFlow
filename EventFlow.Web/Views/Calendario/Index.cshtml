@@ -1,0 +1,62 @@
+﻿@model IEnumerable<EventFlow.Application.DTOs.Calendario.CalendarioEventoDto>
+
+<h1>Calendário Operacional</h1>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Evento</th>
+            <th>Local</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DataEvento.ToShortDateString()</td>
+
+                <td>@item.Nome</td>
+
+                <td>@item.LocalEvento</td>
+
+                <td>
+                    @if (!item.TemEquipe)
+                    {
+                        <span class="badge bg-warning">
+                            Sem Equipe
+                        </span>
+                    }
+                    else if (!item.TemFornecedor)
+                    {
+                        <span class="badge bg-danger">
+                            Sem Fornecedor
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">
+                            Completo
+                        </span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-controller="Evento"
+                       asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-primary btn-sm">
+                        Abrir
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
